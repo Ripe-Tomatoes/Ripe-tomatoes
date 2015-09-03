@@ -1,5 +1,11 @@
 # Contributing
 
+
+git remote add upstream https://github.com/makersquare/<NAME_OF_REPO>.git
+git checkout -b `your-branch-name`
+git pull --rebase upstream master
+    git rebase --continue
+
 ## General Workflow
 
 1. Fork the repo
