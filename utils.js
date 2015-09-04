@@ -48,7 +48,7 @@ module.exports.matchRestaurants = function(yelpArray, foursquareArray) {
           foursquareArray[restaurantsq].venue.location.lat,
           foursquareArray[restaurantsq].venue.location.lng,
           {
-            rating: yelpArray[restauranty].rating_img_url,
+            rating: yelpArray[restauranty].rating,
             url: yelpArray[restauranty].url,
             reviewCount: yelpArray[restauranty].review_count
           },
