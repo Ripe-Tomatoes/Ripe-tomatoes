@@ -34,7 +34,6 @@ module.exports = function (app, express){
     //checks if all API's have been loaded
     var allFetchesFinished = function () {
       for (var key in tor) {
-        console.log('key ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', key);
         if (!tor[key]) {
           return false;
         }
@@ -42,19 +41,15 @@ module.exports = function (app, express){
       return true;
     }
 
-    var resetTor = function () {
-      for (var key in tor) {
-        tor[key] = false;
-      }
-    }
 
     // handle api calls to yelp/4square
     apiSearches.yelpSearch(searchTerm, function(yelpResults){
       tor.yelp = yelpResults;
       //process api data
       if (allFetchesFinished()) {
-        res.send(tor);
-        resetTor();
+        var results = apiSearches.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
+        console.log(results);
+        res.send(results);
       }
     });
 
@@ -62,8 +57,9 @@ module.exports = function (app, express){
       tor.foursquare = foursquareResults;
       // send back data from api calls
       if (allFetchesFinished()) {
-        res.send(tor);
-        resetTor();
+        var results = apiSearches.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
+        console.log(results);
+        res.send(results);
       }
     });
   });
