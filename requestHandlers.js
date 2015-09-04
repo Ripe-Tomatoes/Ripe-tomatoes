@@ -17,15 +17,23 @@ module.exports = function (app, express){
       location : req.body.location
     };
 
+    //***this is a temp placeholder data
+    // var searchTerm = {
+    //   term : 'sushi',
+    //   location : 'san francisco';
+    // };
 
 
-    //handle api calls to yelp/4square
+
+    // handle api calls to yelp/4square
     apiSearches.yelpSearch(searchTerm, function(yelpResults){
+      console.log('this is yelp', yelpResults);
       //process api data
-
-
-      //send back data from api calls
-      res.send(yelpResults);
+      apiSearches.foursquareSearch(searchTerm, function(foursquareResults){
+        console.log(foursquareResults);
+        // send back data from api calls
+        res.send(yelpResults);
+      })
     });
   });
 

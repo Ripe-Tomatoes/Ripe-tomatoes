@@ -5,10 +5,11 @@
   "main": "server.js",
   "dependencies": {
     "body-parser": "^1.13.3",
-    "yelp": "^0.2.0",
     "express": "^4.13.3",
     "oauth": "^0.9.13",
-    "querystring": "^0.2.0"
+    "querystring": "^0.2.0",
+    "request": "^2.61.0",
+    "yelp": "^0.2.0"
   },
   "devDependencies": {},
   "scripts": {
