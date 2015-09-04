@@ -1,10 +1,8 @@
-<div id="searchBar" class="results" ng-init="renderResults()">
+<div id="searchBar" class="main" ng-controller="MainController">
   <h1>Ripe Tomatoes</h1>
-  <form name="searchBar" ng-submit="loadResults()" >
-      <input type="text" name="name" placeholder="Enter restaurant name" >
-      <input type="text" name="location" placeholder="Enter location" >
-      <button type="submit" class="search" >Submit</button>
+  <form name="searchBar" novalidate>
+      <input type="text" name="name" placeholder="Enter restaurant name" ng-model="name">
+      <input type="text" name="location" placeholder="Enter location" ng-model="location">
+      <input type="submit" class="search" ng-click="loadResults()" value='Submit'>
   </form >
-</div>
-<div id="searchResults">
 </div>
