@@ -1,0 +1,28 @@
+{
+  "name": "ripe-tomatoes",
+  "version": "1.0.0",
+  "description": "Restaurant information agregator",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "yelp": "^0.2.0",
+    "express": "^4.13.3",
+    "oauth": "^0.9.13",
+    "querystring": "^0.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zzhan223/Ripe-tomatoes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zzhan223/Ripe-tomatoes/issues"
+  },
+  "homepage": "https://github.com/zzhan223/Ripe-tomatoes#readme"
+}
