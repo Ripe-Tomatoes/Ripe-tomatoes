@@ -48,13 +48,14 @@ module.exports.matchRestaurants = function(yelpArray, foursquareArray) {
           foursquareArray[restaurantsq].venue.location.lat,
           foursquareArray[restaurantsq].venue.location.lng,
           {
-            rating: yelpArray[restauranty].rating_img_url,
+            rating: yelpArray[restauranty].rating,
+            ratingUrl: yelpArray[restauranty].rating_img_url,
             url: yelpArray[restauranty].url,
             reviewCount: yelpArray[restauranty].review_count
           },
           {
             rating: foursquareArray[restaurantsq].venue.rating,
-            url: 'TODO',
+            url: createFoursquareURL(foursquareArray[restaurantsq].venue.id, foursquareArray[restaurantsq].venue.name),
             reviewCount: foursquareArray[restaurantsq].venue.ratingSignals
           });
         matchedRestaurants.push(rest);
@@ -62,6 +63,19 @@ module.exports.matchRestaurants = function(yelpArray, foursquareArray) {
     }
   }
   return matchedRestaurants;
+}
+
+var createFoursquareURL = function(venueID, venueName) {
+  var url = 'https://foursquare.com/v/';
+  for (var index = 0; index < venueName.length; index++) {
+    if (venueName[index] === ' ') {
+      url += '-';
+    } else {
+      url += venueName[index]
+    }
+  };
+  url += '/' + venueID + '?ref=' + apiKeys.foursquareKeys().client_ID;
+  return url;
 }
 
 var Restaurant = function(name, address, url, lat, long, yelpData, foursquareData) {
@@ -74,6 +88,7 @@ var Restaurant = function(name, address, url, lat, long, yelpData, foursquareDat
   };
   this.yelpData = yelpData;
   // {
+  //   rating: 4,
   //   yelpRatingImage: 'https://www.yelp.com/image',
   //   url: 'https://www.yelp.com',
   //   reviewCount: 123
