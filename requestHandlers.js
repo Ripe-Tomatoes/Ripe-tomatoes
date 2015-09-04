@@ -11,7 +11,6 @@ module.exports = function (app, express){
   app.use(parser.json());
 
   app.post('/search', function(req, res){
-    console.log('hello');
     var searchTerm = {
       term : req.body.restaurant,
       location : req.body.location
@@ -41,27 +40,41 @@ module.exports = function (app, express){
       return true;
     }
 
+    //takes in organization name as input ("yelp" or "foursquare") and does the API search, sending a response if all API's are loaded. . .
+    var apiSearch = function (org) {
+      apiSearches[org + 'Search'](searchTerm, function(result){
+        tor[org] = result;
+        //process api data
+        if (allFetchesFinished()) {
+          var results = apiSearches.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
+          res.send(results);
+        }
+      });
+    };
+
+    apiSearch('yelp');
+    apiSearch('foursquare');
 
     // handle api calls to yelp/4square
-    apiSearches.yelpSearch(searchTerm, function(yelpResults){
-      tor.yelp = yelpResults;
-      //process api data
-      if (allFetchesFinished()) {
-        var results = apiSearches.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
-        console.log(results);
-        res.send(results);
-      }
-    });
+    // apiSearches.yelpSearch(searchTerm, function(yelpResults){
+    //   tor.yelp = yelpResults;
+    //   //process api data
+    //   if (allFetchesFinished()) {
+    //     var results = apiSearches.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
+    //     console.log(results);
+    //     res.send(results);
+    //   }
+    // });
 
-    apiSearches.foursquareSearch(searchTerm, function(foursquareResults){
-      tor.foursquare = foursquareResults;
-      // send back data from api calls
-      if (allFetchesFinished()) {
-        var results = apiSearches.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
-        console.log(results);
-        res.send(results);
-      }
-    });
+    // apiSearches.foursquareSearch(searchTerm, function(foursquareResults){
+    //   tor.foursquare = foursquareResults;
+    //   // send back data from api calls
+    //   if (allFetchesFinished()) {
+    //     var results = apiSearches.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
+    //     console.log(results);
+    //     res.send(results);
+    //   }
+    // });
   });
 
 };
