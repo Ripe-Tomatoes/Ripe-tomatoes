@@ -11,7 +11,6 @@ module.exports.yelpSearch = function(searchTerm, callback){
 };
 
 module.exports.foursquareSearch = function(searchTerm, callback) {
-
   //this is the query string to be passed into foursquare's server
   var queryString = 
     'https://api.foursquare.com/v2/venues/explore?client_id=' 
@@ -21,26 +20,48 @@ module.exports.foursquareSearch = function(searchTerm, callback) {
     'near=' + searchTerm.location +
     '&query=' + searchTerm.term;
 
-  request(queryString, function(error, response, body) {
-    if (error) {
-      throw error;
-    }
-    parsedBody = JSON.parse(body);
-    bodyDir = parsedBody.response.groups[0]
-    var rest = new Restaurant(
-      bodyDir.items[0].venue.name,
-      bodyDir.items[0].venue.location.address,
-      bodyDir.items[0].venue.url,
-      bodyDir.items[0].venue.location.lat,
-      bodyDir.items[0].venue.location.lng,
-      'yelpData',
-      {rating: bodyDir.items[0].venue.rating,
-       url: 'TODO',
-       reviewCount: bodyDir.items[0].venue.ratingSignals
-      });
-    callback(rest);
-  })
+    request(queryString, function(error, response, body) {
+      if (error) {
+        throw error;
+      }
+      parsedBody = JSON.parse(body);
+      if (parsedBody.meta.code === 500) {
+        console.log('foursquare server');
+      } else {
+        bodyDir = parsedBody.response.groups[0]
+        callback(bodyDir);
+      }
 
+
+    })
+}
+
+module.exports.matchRestaurants = function(yelpArray, foursquareArray) {
+  var matchedRestaurants = [];
+  for (var restaurantsq = 0; restaurantsq < foursquareArray.length; restaurantsq++) {
+    for (var restauranty = 0; restauranty < yelpArray.length; restauranty++){
+      if (foursquareArray[restaurantsq].venue.name === yelpArray[restauranty].name) {
+        var rest = new Restaurant(
+          foursquareArray[restaurantsq].venue.name,
+          foursquareArray[restaurantsq].venue.location.address,
+          foursquareArray[restaurantsq].venue.url,
+          foursquareArray[restaurantsq].venue.location.lat,
+          foursquareArray[restaurantsq].venue.location.lng,
+          {
+            rating: yelpArray[restauranty].rating_img_url,
+            url: yelpArray[restauranty].url,
+            reviewCount: yelpArray[restauranty].review_count
+          },
+          {
+            rating: foursquareArray[restaurantsq].venue.rating,
+            url: 'TODO',
+            reviewCount: foursquareArray[restaurantsq].venue.ratingSignals
+          });
+        matchedRestaurants.push(rest);
+      }
+    }
+  }
+  return matchedRestaurants;
 }
 
 var Restaurant = function(name, address, url, lat, long, yelpData, foursquareData) {
@@ -51,7 +72,7 @@ var Restaurant = function(name, address, url, lat, long, yelpData, foursquareDat
     latitute: lat,
     longitude: long
   };
-  this.yelpData = 'asdf';
+  this.yelpData = yelpData;
   // {
   //   yelpRatingImage: 'https://www.yelp.com/image',
   //   url: 'https://www.yelp.com',
