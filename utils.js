@@ -73,7 +73,7 @@ var createFoursquareURL = function(venueID, venueName) {
       url += venueName[index]
     }
   };
-  url += '/' + venueID
+  url += '/' + venueID + '?ref=' + apiKeys.foursquareKeys().client_ID;
   return url;
 }
 
