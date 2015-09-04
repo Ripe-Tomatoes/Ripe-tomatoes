@@ -1,6 +1,7 @@
 ### node etc ###
-node_modules
 yelp-api-helper.js
+apiKeys.js
+
 
 # Logs
 logs
@@ -29,3 +30,4 @@ dist/
 # see https://npmjs.org/doc/faq.html#Should-I-check-my-node_modules-folder-into-git
 node_modules/
 bower_components/
+
