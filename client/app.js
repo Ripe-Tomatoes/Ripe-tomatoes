@@ -21,12 +21,16 @@ angular.module('ripeT', [])
   $scope.loadResults = function () {
     console.log("loading results");
     Factory.getResults($scope.location, $scope.name).then(function (resp) {
-      Factory.results = resp;
+      console.log(resp);
+      $scope.results = resp;
       window.location.assign('http://localhost:3000/#/results');
     });
   };
 
-  
+  // $scope.renderResults = function () {
+  //   $scope.results = Factory.results;
+  // };
+
 })
 .factory('Factory', function ($http) {
 
@@ -53,5 +57,5 @@ angular.module('ripeT', [])
 })
 
 
-//name, address, ratings, GEO, 
+//name, address, ratings, GEO,
 
