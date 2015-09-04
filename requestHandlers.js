@@ -10,7 +10,7 @@ module.exports = function (app, express){
 
   app.use(parser.json());
 
-  app.get('/search', function(req, res){
+  app.post('/search', function(req, res){
     console.log('hello');
     var searchTerm = {
       term : req.body.restaurant,
@@ -23,17 +23,48 @@ module.exports = function (app, express){
     //   location : 'san francisco';
     // };
 
+    console.log('searchTerm', searchTerm);
 
+    //"tor" means "gate" in German
+    var tor = {
+      yelp: false,
+      foursquare: false
+    };
+
+    //checks if all API's have been loaded
+    var allFetchesFinished = function () {
+      for (var key in tor) {
+        console.log('key ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', key);
+        if (!tor[key]) {
+          return false;
+        }
+      }
+      return true;
+    }
+
+    var resetTor = function () {
+      for (var key in tor) {
+        tor[key] = false;
+      }
+    }
 
     // handle api calls to yelp/4square
     apiSearches.yelpSearch(searchTerm, function(yelpResults){
-      console.log('this is yelp', yelpResults);
+      tor.yelp = yelpResults;
       //process api data
-      apiSearches.foursquareSearch(searchTerm, function(foursquareResults){
-        console.log(foursquareResults);
-        // send back data from api calls
-        res.send(yelpResults);
-      })
+      if (allFetchesFinished()) {
+        res.send(tor);
+        resetTor();
+      }
+    });
+
+    apiSearches.foursquareSearch(searchTerm, function(foursquareResults){
+      tor.foursquare = foursquareResults;
+      // send back data from api calls
+      if (allFetchesFinished()) {
+        res.send(tor);
+        resetTor();
+      }
     });
   });
 
