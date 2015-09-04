@@ -1,8 +1,33 @@
-<div id="searchBar" class="main" ng-controller="MainController">
+<div id="searchBar" class="results" ng-init="renderResults()" ng-controller= 'MainController'>
   <h1>Ripe Tomatoes</h1>
-  <form name="searchBar" novalidate>
-      <input type="text" name="name" placeholder="Enter restaurant name" ng-model="name">
-      <input type="text" name="location" placeholder="Enter location" ng-model="location">
-      <input type="submit" class="search" ng-click="loadResults()" value='Submit'>
+  <form name="searchBar" ng-submit="loadResults()" >
+      <input type="text" name="name" placeholder="Enter restaurant name" ng-model='name'>
+      <input type="text" name="location" placeholder="Enter location" ng-model='location'>
+      <button type="submit" class="search" >Submit</button>
   </form >
+</div>
+<div id="results-container">
+  <div class="search-result" ng-repeat>
+    <div class='restaurant-header'>
+      <div class="name">{{name}}
+      </div>
+      <div class="url">{{url}}
+      </div>
+      <div class="description">
+      </div>
+      <div class="address"></div>
+    </div>
+    <div class="map"></div>
+    <div class="yelp data">
+      <div class="review"></div>
+      <div class="price"></div>
+      <div class="url"></div>
+    </div>
+    <div class="fourQ data">
+      <div class="review"></div>
+      <div class="price"></div>
+      <div class="url"></div>
+    </div>
+  </div>
+
 </div>
