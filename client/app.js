@@ -31,7 +31,7 @@ angular.module('ripeT', [])
 .factory('Factory', function ($http) {
 
   var getResults = function (loc, rest) {
-    console.log("getting results");
+    console.log("getting results", loc, rest);
     return $http({
       method: 'POST',
       url: '/search',
