@@ -1,6 +1,5 @@
 <!doctype html>
-
-<html lang="en">
+<html lang="en" ng-app="ripeT">
 <head>
   <meta charset="utf-8">
 
@@ -11,41 +10,13 @@
   <!--[if lt IE 9]>
   <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.4/angular.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="styles.css" />
+  <script src="app.js"></script>
 </head>
   <body>
-    <form action="http://127.0.0.1:3000">
-      Restaurant <input type="text" name="searchTerm" value="Tacos">
-      Location <input type="text" name="location" value="San Francisco">
-      <div id="geoLocation">Location</div>
-      <br><br>
-      <input type="submit" value="Submit"/>
-    </form>
-          <button onclick="getLocation()">Show Location</button>
-
+    <div ng-view>
+    </div>
   </body>
-  <script>
-  var x = document.getElementById("geoLocation");
-
-  function getLocation() {
-    if (navigator.geolocation) {
-        window.navigator.geolocation.getCurrentPosition(showPosition, geoLocationUnsuccessful);
-        console.log("calling showPosition");
-    } else {
-        console.log("geo not supported");
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-  };
-
-  function geoLocationUnsuccessful(error){
-    console.log("Error: ", error)
-  }
-  function showPosition(position) {
-    console.log("POSITION", "hello");
-    x.innerHTML = "Latitude: " + position.coords.latitude + 
-    "<br>Longitude: " + position.coords.longitude; 
-    return "hello";
-    console.log(x)
-  }
-
-  </script>
 </html>
