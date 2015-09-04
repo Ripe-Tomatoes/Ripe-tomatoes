@@ -20,18 +20,17 @@ angular.module('ripeT', [])
 
   $scope.loadResults = function () {
     console.log("loading results");
-    Factory.results = Factory.getResults($scope.location, $scope.name);
-    window.location.assign('http://localhost:3000/#/results');
-  }
+    Factory.getResults($scope.location, $scope.name).then(function (resp) {
+      Factory.results = resp;
+      window.location.assign('http://localhost:3000/#/results');
+    });
+  };
 
-  $scope.renderResults = function () {
-
-  }
+  
 })
 .factory('Factory', function ($http) {
 
   var getResults = function (loc, rest) {
-    console.log("getting results", loc, rest);
     return $http({
       method: 'POST',
       url: '/search',
