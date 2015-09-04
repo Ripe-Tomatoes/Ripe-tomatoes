@@ -49,6 +49,7 @@ module.exports.matchRestaurants = function(yelpArray, foursquareArray) {
           foursquareArray[restaurantsq].venue.location.lng,
           {
             rating: yelpArray[restauranty].rating,
+            ratingUrl: yelpArray[restauranty].rating_img_url,
             url: yelpArray[restauranty].url,
             reviewCount: yelpArray[restauranty].review_count
           },
@@ -87,6 +88,7 @@ var Restaurant = function(name, address, url, lat, long, yelpData, foursquareDat
   };
   this.yelpData = yelpData;
   // {
+  //   rating: 4,
   //   yelpRatingImage: 'https://www.yelp.com/image',
   //   url: 'https://www.yelp.com',
   //   reviewCount: 123
