@@ -1,9 +1,10 @@
-<div id="searchBar" class="main" ng-controller="MainController">
+<div id="searchBar" class="results" ng-init="renderResults()">
   <h1>Ripe Tomatoes</h1>
-  <form name="searchBar" novalidate>
+  <form name="searchBar" >
       <input type="text" name="name" placeholder="Enter restaurant name" ng-model="name">
       <input type="text" name="location" placeholder="Enter location" ng-model="location">
       <input type="submit" class="search" ng-click="loadResults()" value='Submit'>
   </form >
 </div>
-
+<div id="searchResults">
+</div>
