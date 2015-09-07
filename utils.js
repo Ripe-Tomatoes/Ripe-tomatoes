@@ -44,13 +44,33 @@ module.exports.foursquareSearch = function (searchTerm, callback) {
 
 module.exports.matchRestaurants = function (yelpArray, foursquareArray) {
   var matchedRestaurants = [];
-  // console.log('**********this is yelp', yelpArray);
-  // console.log('**********this is foursquare', foursquareArray);
+
+  function removeCommonWords (string) {
+    var ignoreWords = ["restaurant", "cuisine"];
+    var cleanedString = string;
+    
+    // for each word in ignore list, remove  any instances of that from the string
+    ignoreWords.forEach( function(word){
+      var regex = new RegExp( word, 'gi');
+      cleanedString = cleanedString.replace(regex, "");
+    });
+    
+    // removes duplicate spaces
+    return cleanedString.replace( /\s+/, " ").trim();
+  };
+
+  function extractAddressNumber (string) {
+    return string !== undefined ? string.match(/\d*\b/)[0] : null;
+  };
+  
   for (var restaurantsq = 0; restaurantsq < foursquareArray.length; restaurantsq++) {
     for (var restauranty = 0; restauranty < yelpArray.length; restauranty++){
-      if (foursquareArray[restaurantsq].venue.name === yelpArray[restauranty].name &&
-          foursquareArray[restaurantsq].venue.location.address === yelpArray[restauranty].location.address[0]) {
-        console.log(yelpArray[restauranty].location.address[0]);
+      // if (extractAddressNumber(yelpArray[restauranty].location.address[0]) === extractAddressNumber(foursquareArray[restaurantsq].venue.location.address)) {
+      //   console.log(removeCommonWords(foursquareArray[restaurantsq].venue.name).length, removeCommonWords(yelpArray[restauranty].name).length);
+      // };
+      if (removeCommonWords(foursquareArray[restaurantsq].venue.name) === removeCommonWords(yelpArray[restauranty].name) &&
+          extractAddressNumber(foursquareArray[restaurantsq].venue.location.address) === extractAddressNumber(yelpArray[restauranty].location.address[0])) {
+  
         var rest = new Restaurant(
           foursquareArray[restaurantsq].venue.name,
           foursquareArray[restaurantsq].venue.location.address,

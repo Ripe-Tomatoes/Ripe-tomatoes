@@ -9,17 +9,17 @@
 <div id="clearer">{{ results.error }} white</div>
 <div class="result" ng-repeat="restaurant in results">
   <div class='restaurant-header'>
-    <a class="name" src="{{ restaurant.url }}">{{ restaurant.name }}</a>
+    <a class="name" href="{{ restaurant.url }}" >{{ restaurant.name }}</a>
     <div class="address">{{ restaurant.address }}</div>
   </div>
   <!-- <div class="map"></div> -->
   <div class="yelp data">
-    <a src="restaurant.yelpData.url" class="link">YELP</a>
+    <a href="{{restaurant.yelpData.url}}" class="link">YELP</a>
     <div class="rating">rating: {{ restaurant.yelpData.rating }}/5</div>
     <div class="count">reviews: {{ restaurant.yelpData.reviewCount }}</div>
   </div>
   <div class="fourQ data">
-    <a src="restaurant.foursquareData.url" class="link">FourSquare</a>
+    <a href="{{restaurant.foursquareData.url}}" class="link">FourSquare</a>
     <div class="rating">rating: {{ restaurant.foursquareData.rating }}/10</div>
     <div class="count">reviews: {{ restaurant.foursquareData.reviewCount }}</div>
   </div>
