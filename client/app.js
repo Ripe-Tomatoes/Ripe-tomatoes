@@ -21,10 +21,18 @@ angular.module('ripeT', [])
   $scope.loadResults = function () {
     console.log("loading results");
     Factory.getResults($scope.location, $scope.name).then(function (resp) {
-      Factory.results = $scope.results = resp;
-      $location.path('results');
+      if (resp['error']) {
+        Factory.results = $scope.results = resp;
+        $location.path('results');
+      } else {
+        console.log("hello");
+        Factory.results = $scope.results = resp.results;
+        $location.path('results');
+      }
     });
   };
+
+  $scope.error = '';
 
   $scope.syncResults = function () {
     $scope.results = Factory.results;
@@ -47,7 +55,7 @@ angular.module('ripeT', [])
     });
   };
 
-  var results = [];
+  var results = {};
 
   return {
     getResults: getResults,

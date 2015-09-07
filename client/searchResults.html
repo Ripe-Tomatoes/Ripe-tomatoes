@@ -6,13 +6,14 @@
       <button type="submit" class="search" >Submit</button>
   </form >
 </div>
+<p>{{ results.error }}</p>
 <div class="search-result" ng-repeat="restaurant in results">
   <div class='restaurant-header'>
     <div class="name">{{ restaurant.name }}
     </div>
     <div class="url">{{ restaurant.url }}
     </div>
-    <img class="rating" ng-src="{{restaurant.yelpData.rating }}">
+    <img class="rating" ng-src="{{restaurant.yelpData.ratingUrl}}">
     <div class="address"></div>{{ restaurant.location}}
   </div>
   <!-- <div class="map"></div> -->
