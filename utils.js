@@ -19,21 +19,27 @@ module.exports.foursquareSearch = function(searchTerm, callback) {
     '&v=20130815&' +
     'near=' + searchTerm.location +
     '&query=' + searchTerm.term;
-
-    request(queryString, function(error, response, body) {
-      if (error) {
-        throw error;
+  request(queryString, function(error, response, body) {
+    if (error) {
+      throw error;
+    }
+    parsedBody = JSON.parse(body);
+    console.log(parsedBody);
+    if (parsedBody.meta.code === 400) {
+      if (parsedBody.meta.errorType === 'failed_geocode') {
+        console.log('no geography that matches user inquiry found');
+        callback({error: 'no geography that matches user inquiry found',
+                  error_code: 50})
       }
-      parsedBody = JSON.parse(body);
-      if (parsedBody.meta.code === 500) {
-        console.log('foursquare server');
-      } else {
-        bodyDir = parsedBody.response.groups[0]
-        callback(bodyDir);
-      }
+    } else if (parsedBody.meta.code === 500) {
+      console.log('foursquare server');
+    } else {
+      bodyDir = parsedBody.response.groups[0]
+      callback(bodyDir);
+    }
 
 
-    })
+  })
 }
 
 module.exports.matchRestaurants = function(yelpArray, foursquareArray) {
