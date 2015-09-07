@@ -13,7 +13,7 @@ module.exports = function (app, express){
 
   app.use(parser.json());
 
-  app.post('/search', function(req, res){
+  app.post('/search', function (req, res){
     var searchTerm = {
       term : req.body.restaurant,
       location : req.body.location
@@ -43,6 +43,10 @@ module.exports = function (app, express){
       return true;
     }
 
+    var resetErrors = function () {
+      noErrors = true;
+    }
+
     //takes in organization name as input ("yelp" or "foursquare") and does the API search, sending a response if all API's are loaded. . .
     var apiSearch = function (org) {
       utils[org + 'Search'](searchTerm, function(result){
@@ -59,13 +63,17 @@ module.exports = function (app, express){
         //process api data
         if (allFetchesFinished()) {
           var results = utils.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
-          res.send(results);
+          if (results.length === 0) {
+            res.end('No restaurants found');
+          } else {
+            res.send(results);
+          }
         }
       });
     };
 
     apiSearch('yelp');
-    noErrors = true;
+    resetErrors();
     apiSearch('foursquare');
 
     // handle api calls to yelp/4square
