@@ -58,15 +58,21 @@ module.exports = function (app, express){
           errorCode = result.error_code;
         }
         if (!noErrors) {
-          res.end('Error code ' + errorCode + ': ' + errorMessage);
+          res.end({
+            error: errorMessage,
+            errorCode: errorCode
+          });
         } else 
         //process api data
         if (allFetchesFinished()) {
           var results = utils.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
           if (results.length === 0) {
-            res.end('No restaurants found');
+            res.end({
+              error: 'No restaurants found',
+              errorCode: 20
+            });
           } else {
-            res.send(results);
+            res.send({results: results});
           }
         }
       });
