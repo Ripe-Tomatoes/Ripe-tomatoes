@@ -16,20 +16,19 @@ angular.module('ripeT', [])
     });
 })
 
-.controller('MainController', function ($scope, Factory) {
+.controller('MainController', function ($scope, $location, Factory) {
 
   $scope.loadResults = function () {
     console.log("loading results");
     Factory.getResults($scope.location, $scope.name).then(function (resp) {
-      console.log(resp);
-      $scope.results = resp;
-      window.location.assign('http://localhost:3000/#/results');
+      Factory.results = $scope.results = resp;
+      $location.path('results');
     });
   };
 
-  // $scope.renderResults = function () {
-  //   $scope.results = Factory.results;
-  // };
+  $scope.syncResults = function () {
+    $scope.results = Factory.results;
+  };
 
 })
 .factory('Factory', function ($http) {
@@ -48,7 +47,7 @@ angular.module('ripeT', [])
     });
   };
 
-  var results = {};
+  var results = [];
 
   return {
     getResults: getResults,
