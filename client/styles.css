@@ -1,5 +1,44 @@
 .main {
-  position: fixed;
-  top: 300px;
-  left: 300px;
+ text-align: center;
+ margin-left: auto;
+ margin-right: auto;
+ margin-top: 0px;
+ margin-bottom: 0px;
+ width: 50%;
+}
+
+#logo {
+ max-width: 20px;
+ float: left;
+ margin-left: 10px;
+ margin-right: 10px;
+}
+
+#navbar {
+ background-color: #34495e;
+ padding: 5px;
+}
+
+h1 {
+ font-size: 5em;
+ color: #34495e;
+ margin-top: 20px;
+ margin-bottom: 0px;
+ text-align: center;
+
+}
+
+h2 {
+ margin-top: 25px;
+}
+
+h3 {
+ float: left;
+ margin-top: 0px;
+ margin-right: 60%;
+ color: white;
+}
+
+img {
+  margin-top: 100px;
 }
