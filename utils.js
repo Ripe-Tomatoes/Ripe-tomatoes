@@ -73,7 +73,8 @@ module.exports.matchRestaurants = function (yelpArray, foursquareArray) {
   
         var rest = new Restaurant(
           foursquareArray[restaurantsq].venue.name,
-          foursquareArray[restaurantsq].venue.location.address,
+          //
+          yelpArray[restauranty].location.address[0],
           foursquareArray[restaurantsq].venue.url,
           foursquareArray[restaurantsq].venue.location.lat,
           foursquareArray[restaurantsq].venue.location.lng,
