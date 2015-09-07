@@ -6,6 +6,7 @@
       <button type="submit" class="search" >Submit</button>
   </form >
 </div>
+<p>{{ results.error }}</p>
 <div class="search-result" ng-repeat="restaurant in results">
   <div class='restaurant-header'>
     <div class="name">{{ restaurant.name }}

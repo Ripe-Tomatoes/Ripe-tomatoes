@@ -58,7 +58,7 @@ module.exports = function (app, express){
           errorCode = result.error_code;
         }
         if (!noErrors) {
-          res.end({
+          res.send({
             error: errorMessage,
             errorCode: errorCode
           });
@@ -67,7 +67,7 @@ module.exports = function (app, express){
         if (allFetchesFinished()) {
           var results = utils.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
           if (results.length === 0) {
-            res.end({
+            res.send({
               error: 'No restaurants found',
               errorCode: 20
             });
