@@ -65,6 +65,7 @@ module.exports.matchRestaurants = function (yelpArray, foursquareArray) {
           },
           {
             rating: foursquareArray[restaurantsq].venue.rating,
+            ratingColor: foursquareArray[restaurantsq].venue.ratingColor,
             url: createFoursquareURL(foursquareArray[restaurantsq].venue.id, foursquareArray[restaurantsq].venue.name),
             reviewCount: foursquareArray[restaurantsq].venue.ratingSignals
           });
