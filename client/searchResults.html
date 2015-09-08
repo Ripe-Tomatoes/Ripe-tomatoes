@@ -88,9 +88,9 @@
     <div>
       <a href="#" class="link">Tomato Score: </a>
       <!-- TODO: fix tomato meter...I created a function calculateTomatoRating in the controller for us to build in our own logic for computing the composite score  -->
-      <span ng-repeat="i in getNumber(7, 'ripe_tomatoes')">
+      <span ng-repeat="i in getNumber(restaurant.compositeScore, 'ripe_tomatoes')">
         <img width="15px" height="15px" src="{{ i }}" alt="">
-      </span> ({{ i }} out of 10 based on n reviews)
+      </span> ({{ restaurant.compositeScore }} out of 10 based on {{ restaurant.totalReviews }} reviews)
     </div>
 
   <!-- Yelp meter -->

@@ -136,7 +136,13 @@ var Restaurant = function (name, address, url, lat, long, yelpData, foursquareDa
   //   url: 'https://www.foursquare.com',
   //   reviewCount: 23
   // },
-  this.compositeScore = 'TODO';
+
+  this.totalReviews = this.yelpData.reviewCount + this.foursquareData.reviewCount;
+
+  this.compositeScore = (( this.yelpData.rating * 2 * this.yelpData.reviewCount +
+                    this.foursquareData.rating * this.foursquareData.reviewCount ) / 
+                    ( this.totalReviews )).toFixed(1);
+  
   this.phoneNumber = phoneNumber;
   this.imageUrl = imageUrl;
 }
