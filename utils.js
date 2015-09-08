@@ -124,13 +124,18 @@ var Restaurant = function (name, address, url, lat, long, yelpData, foursquareDa
     longitude: long
   };
   this.yelpData = yelpData;
+  this.yelpData.rating = this.yelpData.rating || 0;
+  this.yelpData.reviewCount = this.yelpData.reviewCount || 0;
   // {
   //   rating: 4,
   //   ratingUrl: 'https://www.yelp.com/image',
   //   url: 'https://www.yelp.com',
   //   reviewCount: 123
   // }
+
   this.foursquareData = foursquareData;
+  this.foursquareData.rating = this.foursquareData.rating || 0;
+  this.foursquareData.reviewCount = this.foursquareData.reviewCount || 0;
   // {
   //   rating: 9.8,
   //   url: 'https://www.foursquare.com',
