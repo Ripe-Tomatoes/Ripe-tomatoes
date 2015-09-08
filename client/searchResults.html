@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse" ng-init="syncResults()">
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-init="syncResults()">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -53,55 +53,65 @@
   </div><!-- /.container-fluid -->
 </nav>
 
-<!-- <div id="navbar" class="results" ng-init="syncResults()">
-  <h3>Ripe Tomatoes</h3>
-  <form name="searchBar" ng-submit="loadResults()" >
-      <input type="text" name="name" placeholder="Enter restaurant name" ng-model='name'>
-      <input type="text" name="location" placeholder="Enter location" ng-model='location'>
-      <button type="submit" class="search" >Submit</button>
-  </form >
-</div> -->
-<!-- clearer div solely for purpose of clearing div -->
-
-<div class="container col-sm-12 col-md-8" >
-  <div class="well" ng-repeat="restaurant in results" ng-init="initializeMap()">
-    <div class='restaurant-header'>
-      <a class="name" href="{{ restaurant.url }}" >{{ restaurant.name }}</a>
-      <div class="address">{{ restaurant.address }}</div>
+<!-- padding applied to clear fixed navbar -->
+<div style="padding: 60px"> 
+  <div style="float: right; position: fixed; right: 0px" class="col-sm-12 col-md-4">
+    <div>
+     <map id='map'></map>
     </div>
-
-<!-- Composite Tomato Meter -->
-  <div>
-    <a href="#" class="link">Tomato Score: </a>
-    <!-- TODO: fix tomato meter...I created a function calculateTomatoRating in the controller for us to build in our own logic for computing the composite score  -->
-    <span ng-repeat="i in [1,2,3,4,5,6,7]">
-      <img width="15px" height="15px" src="tomato_map.png" alt="">
-    </span> (x out of 5 based on n reviews)
   </div>
-
-<!-- Yelp meter -->
-  <div class="yelp data">
-    <a href="{{restaurant.yelpData.url}}" class="link">Yelp: </a>
-    <span class="rating"><img src="{{ restaurant.yelpData.ratingUrl }}" alt=""> ({{restaurant.yelpData.rating }} out of 5 based on {{restaurant.yelpData.reviewCount}} reviews)</span>
-  </div>
-
-<!-- FourSquare Meter -->
-    <div class="fourQ data">
-      <a href="{{restaurant.foursquareData.url}}" class="link">FourSquare</a>
-      <div id="fs-logo" class="fs_rating" ng-repeat="i in getNumber(restaurant.foursquareData.rating)">
-        <img  width="15px" height="15px" src="foursquare_logo.png" alt="" >
+  <!-- <div id="navbar" class="results" ng-init="syncResults()">
+    <h3>Ripe Tomatoes</h3>
+    <form name="searchBar" ng-submit="loadResults()" >
+        <input type="text" name="name" placeholder="Enter restaurant name" ng-model='name'>
+        <input type="text" name="location" placeholder="Enter location" ng-model='location'>
+        <button type="submit" class="search" >Submit</button>
+    </form >
+  </div> -->
+  <div class="container col-sm-12 col-md-8" >
+    <div class="well" ng-repeat="restaurant in results" ng-init="initializeMap()">
+    <!-- Using yelp image image_url  -->
+      <img style="float: right" src="{{ restaurant.imageUrl }}" alt="">
+      <div class='restaurant-header'>
+        <a class="name" href="{{ restaurant.url }}" >{{ restaurant.name }}</a>
+        <div class="address" ng-repeat="line in restaurant.address">
+          <div>{{ line }}</div>
+        </div>
+        <div>
+          <span class="glyphicon glyphicon glyphicon-earphone"></span>
+          <span>{{ restaurant.phoneNumber }}</span>
+        </div>
+        <br>
       </div>
 
-      <span class="count"> ({{ restaurant.foursquareData.rating }} out of 10 based on {{ restaurant.foursquareData.reviewCount }} reviews)</span>
+  <!-- Composite Tomato Meter -->
+    <div>
+      <a href="#" class="link">Tomato Score: </a>
+      <!-- TODO: fix tomato meter...I created a function calculateTomatoRating in the controller for us to build in our own logic for computing the composite score  -->
+      <span ng-repeat="i in getNumber(7, 'ripe_tomatoes')">
+        <img width="15px" height="15px" src="{{ i }}" alt="">
+      </span> ({{ i }} out of 10 based on n reviews)
+    </div>
+
+  <!-- Yelp meter -->
+    <div class="yelp data">
+      <a href="{{restaurant.yelpData.url}}" class="link">Yelp: </a>
+      <span class="rating"><img src="{{ restaurant.yelpData.ratingUrl }}" alt=""> ({{restaurant.yelpData.rating }} out of 5 based on {{restaurant.yelpData.reviewCount}} reviews)</span>
+    </div>
+
+  <!-- FourSquare Meter -->
+      <div class="fourQ data">
+        <a href="{{restaurant.foursquareData.url}}" class="link">FourSquare</a>
+        <div id="fs-logo" class="fs_rating" ng-repeat="i in getNumber(restaurant.foursquareData.rating, 'foursquare')">
+          <img  width="15px" height="15px" src="{{ i }}" alt="" >
+        </div>
+
+        <span class="count"> ({{ restaurant.foursquareData.rating }} out of 10 based on {{ restaurant.foursquareData.reviewCount }} reviews)</span>
+      </div>
     </div>
   </div>
 </div>
 
-<div class="col-sm-12 col-md-4">
-  <div>
-   <map id='map'></map>
-  </div>
-</div>
 
 
 

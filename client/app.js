@@ -17,9 +17,42 @@ angular.module('ripeT', ['ngMap'])
 })
 
 .controller('MainController', function ($scope, $location, Factory) {
-  $scope.getNumber = function(num) {
-    console.log(num, Array(Math.round(num)));
-    return new Array(Math.floor(num));   
+  $scope.calculateTomatoRating = function(num){
+    return new Array(num);
+  };
+
+  $scope.getNumber = function(num, typeOfRating) {
+    var ratingImages = {
+      foursquare: {
+        whole: 'foursquare_logo.png',
+        half: 'tomato_map.png',
+        whole_gray: 'foursquare-blue.ico'
+      },
+      ripe_tomatoes: {
+        whole: 'tomato_map.png',
+        half: 'foursquare_logo.png',
+        whole_gray: 'foursquare-blue.ico'
+      }
+    };
+
+    var arr = [];
+    var fraction = num % 1;
+
+    for(var i = 0; i < Math.floor(num); i++){
+      arr.push( ratingImages[typeOfRating].whole );
+    }
+
+    if(fraction > .25 && fraction < .75){
+      arr.push( ratingImages[typeOfRating].half );
+    }
+    else if (fraction >= .75){
+      arr.push( ratingImages[typeOfRating].whole );
+    }
+    for(var i = arr.length; i < 10; i++){
+      arr.push( ratingImages[typeOfRating].whole_gray );
+    }
+
+    return arr;
   };
 
   $scope.loadResults = function () {
