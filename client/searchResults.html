@@ -7,10 +7,13 @@
   </form >
 </div>
 <div id="clearer">{{ results.error }} white</div>
-<div class="result" ng-repeat="restaurant in results">
+<div map-lazy-load="http://maps.google.com/maps/api/js">
+ <map id='map'></map>
+</div>
+<div class="result" ng-repeat="restaurant in results" ng-init="initializeMap()">
   <div class='restaurant-header'>
     <a class="name" href="{{ restaurant.url }}" >{{ restaurant.name }}</a>
-    <div class="address">{{ restaurant.address }}</div>
+    <div class="address">{{ <restaurant class="address"></restaurant> }}</div>
   </div>
   <!-- <div class="map"></div> -->
   <div class="yelp data">

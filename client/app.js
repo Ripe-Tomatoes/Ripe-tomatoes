@@ -1,4 +1,4 @@
-angular.module('ripeT', [])
+angular.module('ripeT', ['ngMap'])
 
 .config(function ($routeProvider, $httpProvider) {
 
@@ -25,7 +25,6 @@ angular.module('ripeT', [])
         Factory.results = $scope.results = resp;
         $location.path('results');
       } else {
-        console.log("hello");
         Factory.results = $scope.results = resp.results;
         $location.path('results');
       }
@@ -36,6 +35,39 @@ angular.module('ripeT', [])
 
   $scope.syncResults = function () {
     $scope.results = Factory.results;
+  };
+
+  $scope.initializeMap = function () {
+    var map = new google.maps.Map(document.getElementById('map'), {
+         center: {lat: 37.787767, lng: -122.400076},
+         zoom: 1
+    });
+    var infowindow = new google.maps.InfoWindow();
+    var bounds = new google.maps.LatLngBounds();
+    $scope.map = map;
+    $scope.markers = [];
+    var createMarker = function ( place, bounds ){
+     console.log(place)
+     var geometry = new google.maps.LatLng( place.location.latitute, place.location.longitude);
+     bounds.extend(geometry);
+     var marker = new google.maps.Marker({
+       position: geometry,
+       map: $scope.map,
+       icon: 'tomato_map.png',
+       title: place.name
+     });
+     google.maps.event.addListener(marker, 'click', function() {
+       infowindow.setContent('<div>'+place.name+'</div><div>'+place.address+'</div><div>foursquare rating: '+place.foursquareData.rating+'</div><div>Yelp Rating: <img src='+place.yelpData.ratingUrl+'></img></div>');
+       infowindow.open($scope.map, this);
+     });
+     $scope.markers.push(marker);
+    };
+
+    for (var i = 0; i < $scope.results.length; i++){
+     createMarker($scope.results[i], bounds);
+    }
+    $scope.map.setCenter(bounds.getCenter());
+    $scope.map.fitBounds(bounds);
   };
 
 })
