@@ -73,8 +73,9 @@ module.exports.matchRestaurants = function (yelpArray, foursquareArray) {
   
         var rest = new Restaurant(
           foursquareArray[restaurantsq].venue.name,
-          //
-          yelpArray[restauranty].location.address[0],
+          // changed below to pull from yelp's location.display_address property instead of the location.address[0]
+          // yelpArray[restauranty].location.address[0],
+          yelpArray[restauranty].location.display_address,
           foursquareArray[restaurantsq].venue.url,
           foursquareArray[restaurantsq].venue.location.lat,
           foursquareArray[restaurantsq].venue.location.lng,
@@ -89,7 +90,11 @@ module.exports.matchRestaurants = function (yelpArray, foursquareArray) {
             ratingColor: foursquareArray[restaurantsq].venue.ratingColor,
             url: createFoursquareURL(foursquareArray[restaurantsq].venue.id, foursquareArray[restaurantsq].venue.name),
             reviewCount: foursquareArray[restaurantsq].venue.ratingSignals
-          });
+          },
+          // yelpArray[restauranty].display_phone
+          yelpArray[restauranty].display_phone,
+          yelpArray[restauranty].image_url
+          );
         matchedRestaurants.push(rest);
       }
     }
@@ -110,7 +115,7 @@ var createFoursquareURL = function (venueID, venueName) {
   return url;
 }
 
-var Restaurant = function (name, address, url, lat, long, yelpData, foursquareData) {
+var Restaurant = function (name, address, url, lat, long, yelpData, foursquareData, phoneNumber, imageUrl) {
   this.name = name;
   this.address = address;
   this.url = url;
@@ -132,4 +137,6 @@ var Restaurant = function (name, address, url, lat, long, yelpData, foursquareDa
   //   reviewCount: 23
   // },
   this.compositeScore = 'TODO';
+  this.phoneNumber = phoneNumber;
+  this.imageUrl = imageUrl;
 }
