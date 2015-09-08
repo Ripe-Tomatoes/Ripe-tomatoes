@@ -18,6 +18,12 @@
  margin-right: 10px;
 }
 
+#fs-logo {
+  max-width: 20px;
+  max-height: 20px;
+
+}
+
 #navbar {
  background-color: #34495e;
  padding: 5px;
@@ -43,7 +49,10 @@ h3 {
  color: white;
 }
 
-img {
+.fs_rating {
+  display: inline;
+}
+#mainImage {
   margin-top: 100px;
 }
 

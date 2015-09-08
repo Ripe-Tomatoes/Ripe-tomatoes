@@ -17,6 +17,10 @@ angular.module('ripeT', ['ngMap'])
 })
 
 .controller('MainController', function ($scope, $location, Factory) {
+  $scope.getNumber = function(num) {
+    console.log(num, Array(Math.round(num)));
+    return new Array(Math.floor(num));   
+  };
 
   $scope.loadResults = function () {
     console.log("loading results");
