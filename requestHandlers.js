@@ -6,6 +6,7 @@ var utils = require('./utils.js');
 //Server request handler
 //Exported to: server.js
 module.exports = function (app, express){
+  //These error messages are placeholders for if there are any errors for any given API request.
   var noErrors = true;
   var errorMessage;;
   var errorCode;
@@ -53,23 +54,41 @@ module.exports = function (app, express){
     //Takes in service name ("yelp" or "foursquare") and submits an request to the given service. If any given API provides 
     //an error, this function will mark the query as having an error. If the API call is successful, it updates the tor 
     //object by changing the value of the service key to the results of the API call.
+
+    //Note that the API searches are done ASYNC and are done concurrently to minimize the time it takes to fetch the API.
+    //Thus, 3 API calls that take 300ms, 200ms, and 150ms individually would only need 300ms to complete and not 650ms.
+    //This is why the tor object is necessary, as it is a persistant check to see if all API fetches are complete before
+    //sending back any data. 
+
+    //Note that this function is called for every single API
     //TODO: finish this
-    var apiSearch = function (org) {
-      utils[org + 'Search'](searchTerm, function(result){
-        tor[org] = result;
+    var apiSearch = function (API) {
+      utils[API + 'Search'](searchTerm, function (result){
+        tor[API] = result;
+
+        //handles error_code 50, which means the user's inputted location could not be found.
         if (result.error_code === 50) {
           console.log('error caught');
           noErrors = false;
           errorMessage = result.error;
           errorCode = result.error_code;
         }
+
+        //If there was an error in the request, send error message to client in the form of an object:
+        // { error: 'errorMessage as a string',
+        //   errorCode: integer}
         if (!noErrors) {
           res.send({
             error: errorMessage,
             errorCode: errorCode
           });
+
+        //Otherwise, if all API fetches are complete, run the utils.matchRestaurants function to match up all the results
+        //across all of the API fetches. Any additional APIs would need to be added into the matchRestaurants function
         } else if (allFetchesFinished()) {
           var results = utils.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
+          
+          //If no matches between the arrays are found, or the arrays are empty, return errorCode 20: No restaurants found
           if (results.length === 0) {
             res.send({
               error: 'No restaurants found',
@@ -83,29 +102,11 @@ module.exports = function (app, express){
     };
 
     apiSearch('yelp');
+
+    //Errors reset is necessary to ensure that TODO FINISH THIS
+    //check if this is better placed at the end of apiSearch()
     resetErrors();
     apiSearch('foursquare');
-
-    // handle api calls to yelp/4square
-    // utils.yelpSearch(searchTerm, function(yelpResults){
-    //   tor.yelp = yelpResults;
-    //   //process api data
-    //   if (allFetchesFinished()) {
-    //     var results = utils.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
-    //     console.log(results);
-    //     res.send(results);
-    //   }
-    // });
-
-    // utils.foursquareSearch(searchTerm, function(foursquareResults){
-    //   tor.foursquare = foursquareResults;
-    //   // send back data from api calls
-    //   if (allFetchesFinished()) {
-    //     var results = utils.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
-    //     console.log(results);
-    //     res.send(results);
-    //   }
-    // });
   });
 
 };
