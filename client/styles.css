@@ -62,3 +62,27 @@ h3 {
   margin: 5px;
   padding: 10px;
 }
+
+#user_actions {
+  margin-top: 20px;
+}
+
+.name {
+  font-size: 16px;
+}
+
+.user-action {
+  display: inline-block;
+}
+
+.user-action > span > a {
+  margin-left: 50px;
+}
+
+#view_comments {
+  margin-left: 15px;
+}
+
+#rating_meters {
+  margin-top: 15px;
+}
