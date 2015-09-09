@@ -1,6 +1,6 @@
 //API search functions
 
-var apiKeys = require('./apiKeys.js');
+var apiKeys = require('../../apiKeys.js');
 var request = require("request");
 var yelp = require("yelp").createClient(apiKeys.yelpKeys());
 

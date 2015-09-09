@@ -1,6 +1,6 @@
 // var apiKeys = require('./apiKeys.js');
 // var yelp = require("yelp").createClient(apiKeys.yelpKeys);
-var requestHandlers = require('./requestHandlers');
+var requestHandlers = require('./config/requestHandlers');
 
 var parser = require('body-parser');
 
@@ -9,7 +9,7 @@ var parser = require('body-parser');
 var express = require('express');
 var querystring = require('querystring');
 var app = express();
-app.use(express.static(__dirname + '/client'));
+app.use(express.static(__dirname + '/../client'));
 // http://127.0.0.1:3000/?firstname=Restaurant&lastname=Location
 // {"searchTerm":"Restaurant","location":"Location"}
 // app.use(parser.json());
