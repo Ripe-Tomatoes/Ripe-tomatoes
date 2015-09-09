@@ -31,10 +31,10 @@
       </ul>
       <form class="navbar-form navbar-left" role="search" ng-submit="loadResults()">
         <div class="form-group">
-          <input type="text" class="form-control" ng-model="name" placeholder="Restaurant">
-          <input type="text" class="form-control" placeholder="Location" ng-model="location">
+          <input type="text" class="form-control" ng-model="name" placeholder="Restaurant" tabindex="1" autofocus>
+          <input type="text" class="form-control" placeholder="Location" ng-model="location" tabindex="2">
         </div>
-        <button type="submit" class="btn btn-default">Search</button>
+        <button type="submit" class="btn btn-default" tabindex="3">Search</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Link</a></li>
@@ -51,29 +51,26 @@
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
-</nav>
+</nav> <!-- end Navbar -->
 
-<!-- padding applied to clear fixed navbar -->
-<div style="padding: 60px"> 
-  <div style="float: right; position: fixed; right: 0px" class="col-sm-12 col-md-4">
+<!-- MAIN CONTAINER FOR CONTENT (search results and map) -->
+<div id="searchResults_content" style="padding: 60px"> <!-- padding applied to clear fixed navbar -->
+
+  <!-- SEARCH RESULTS MAP -->
+  <div id="map_search_results" style="float: right; position: fixed; right: 0px" class="col-sm-12 col-md-4">
     <div>
      <map id='map'></map>
     </div>
-  </div>
-  <!-- <div id="navbar" class="results" ng-init="syncResults()">
-    <h3>Ripe Tomatoes</h3>
-    <form name="searchBar" ng-submit="loadResults()" >
-        <input type="text" name="name" placeholder="Enter restaurant name" ng-model='name'>
-        <input type="text" name="location" placeholder="Enter location" ng-model='location'>
-        <button type="submit" class="search" >Submit</button>
-    </form >
-  </div> -->
-  <div class="container col-sm-12 col-md-8" >
-    <div class="well" ng-repeat="restaurant in results" ng-init="initializeMap()">
-    <!-- Using yelp image image_url  -->
+  </div> <!-- end search results map -->
+
+<!-- RESULTS CONTAINER (wraps all search result items)  -->
+  <div id="results_container" class="container col-sm-12 col-md-8" >
+  <!-- RESULT ITEM CONTAINER -->
+    <div id="search_result_item" class="well" ng-repeat="restaurant in results" ng-init="initializeMap()">
+      <!-- Using yelp image image_url  -->
       <img style="float: right" src="{{ restaurant.imageUrl }}" alt="">
       <div class='restaurant-header'>
-        <a class="name" href="{{ restaurant.url }}" target='_blank'>{{ restaurant.name }}</a>
+        <strong><a class="name" href="{{ restaurant.url }}" target='_blank'>{{ restaurant.name }}</a></strong>
         <div class="address" ng-repeat="line in restaurant.address">
           <div>{{ line }}</div>
         </div>
@@ -81,25 +78,26 @@
           <span class="glyphicon glyphicon glyphicon-earphone"></span>
           <span>{{ restaurant.phoneNumber }}</span>
         </div>
-        <br>
       </div>
 
-  <!-- Composite Tomato Meter -->
-    <div>
-      <a href="#" class="link">Tomato Score: </a>
-      <!-- TODO: fix tomato meter...I created a function calculateTomatoRating in the controller for us to build in our own logic for computing the composite score  -->
-      <span ng-repeat="i in getNumber(restaurant.compositeScore, 'ripe_tomatoes')">
-        <img width="15px" height="15px" src="{{ i }}" alt="">
-      </span> ({{ restaurant.compositeScore }} out of 10 based on {{ restaurant.totalReviews }} reviews)
-    </div>
+  <!-- RATING METERS -->
+    <div id="rating_meters">
+    <!-- Composite Tomato Meter -->
+      <div class="tomato meter">
+        <a href="#" class="link">Tomato Score: </a>
+        <!-- TODO: fix tomato meter...I created a function calculateTomatoRating in the controller for us to build in our own logic for computing the composite score  -->
+        <span ng-repeat="i in getNumber(restaurant.compositeScore, 'ripe_tomatoes')">
+          <img width="15px" height="15px" src="{{ i }}" alt="">
+        </span> ({{ restaurant.compositeScore }} out of 10 based on {{ restaurant.totalReviews }} reviews)
+      </div>
 
-  <!-- Yelp meter -->
-    <div class="yelp data">
-      <a href="{{restaurant.yelpData.url}}" class="link" target='_blank'>Yelp: </a>
-      <span class="rating"><img src="{{ restaurant.yelpData.ratingUrl }}" alt=""> ({{restaurant.yelpData.rating }} out of 5 based on {{restaurant.yelpData.reviewCount}} reviews)</span>
-    </div>
+    <!-- Yelp meter -->
+      <div class="yelp data">
+        <a href="{{restaurant.yelpData.url}}" class="link" target='_blank'>Yelp: </a>
+        <span class="rating"><img src="{{ restaurant.yelpData.ratingUrl }}" alt=""> ({{restaurant.yelpData.rating }} out of 5 based on {{restaurant.yelpData.reviewCount}} reviews)</span>
+      </div>
 
-  <!-- FourSquare Meter -->
+    <!-- FourSquare Meter -->
       <div class="fourQ data">
         <a href="{{restaurant.foursquareData.url}}" class="link" target='_blank'>FourSquare</a>
         <div id="fs-logo" class="fs_rating" ng-repeat="i in getNumber(restaurant.foursquareData.rating, 'foursquare')">
@@ -108,9 +106,22 @@
 
         <span class="count"> ({{ restaurant.foursquareData.rating }} out of 10 based on {{ restaurant.foursquareData.reviewCount }} reviews)</span>
       </div>
-    </div>
-  </div>
-</div>
+    </div> <!-- end rating meters -->
+
+    <!-- USER ACTIONS -->    
+      <div id="user_actions">
+      <!-- Add to favorites -->
+        <div id="add_to_favorites" class="user-action">
+          <span class="glyphicon glyphicon-star-empty"></span><a href="#">  Add to Favorites (potential feature)</a>
+        </div> <!-- end add_to_favorites -->
+      <!-- View comments -->
+        <div id="view_comments" class="user-action">
+          <span class="glyphicon glyphicon-comment"></span><a href="#">  View Comments (potential feature)</a>
+        </div> <!-- end add_to_favorites -->
+      </div> <!-- end user_actions div -->
+    </div> <!-- end search_result_item -->
+  </div> <!-- end results_container -->
+</div> <!-- end searchResult_content -->
 
 
 
