@@ -8,26 +8,14 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Ripe Tomatoes</a>
+      <div>
+        <a class="navbar-brand" href="#"><img style="width: 25 px; height:25px" src="tomato_map.png"></a>
+      </div>
     </div>
-
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
+        <li><a href="#">Ripe Tomatoes <span class="sr-only">(current)</span></a></li>
       </ul>
       <form class="navbar-form navbar-left" role="search" ng-submit="loadResults()">
         <div class="form-group">
@@ -57,14 +45,14 @@
 <div id="searchResults_content" style="padding: 60px"> <!-- padding applied to clear fixed navbar -->
 
   <!-- SEARCH RESULTS MAP -->
-  <div id="map_search_results" style="float: right; position: fixed; right: 0px" class="col-sm-12 col-md-4">
+  <div id="map_search_results" style="float: right; position: fixed; right: 0px; margin-bottom: 20px;"  class="col-sm-12 col-md-4">
     <div>
      <map id='map'></map>
     </div>
   </div> <!-- end search results map -->
 
 <!-- RESULTS CONTAINER (wraps all search result items)  -->
-  <div id="results_container" class="container col-sm-12 col-md-8" >
+  <div id="results_container" class="container col-sm-12 col-md-8" style='position: static;'>
   <!-- RESULT ITEM CONTAINER -->
     <div id="search_result_item" class="well" ng-repeat="restaurant in results" ng-init="initializeMap()">
       <!-- Using yelp image image_url  -->
@@ -108,7 +96,7 @@
       </div>
     </div> <!-- end rating meters -->
 
-    <!-- USER ACTIONS -->    
+    <!-- USER ACTIONS -->
       <div id="user_actions">
       <!-- Add to favorites -->
         <div id="add_to_favorites" class="user-action">

@@ -25,13 +25,13 @@ angular.module('ripeT', ['ngMap'])
     var ratingImages = {
       foursquare: {
         whole: 'foursquare_logo.png',
-        half: 'tomato_map.png',
-        whole_gray: 'foursquare-blue.ico'
+        half: 'foursquare_half.png',
+        whole_gray: 'foursquare_grey.png'
       },
       ripe_tomatoes: {
         whole: 'tomato_map.png',
-        half: 'foursquare_logo.png',
-        whole_gray: 'foursquare-blue.ico'
+        half: 'tomato_half.png',
+        whole_gray: 'tomato_grey.png'
       }
     };
 
