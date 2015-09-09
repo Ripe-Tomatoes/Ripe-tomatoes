@@ -11,6 +11,14 @@ angular.module('ripeT', ['ngMap'])
       templateUrl: 'searchResults.html',
       controller: 'MainController'
     })
+    .when('/signin', {
+      templateUrl: 'signin.html',
+      controller: 'MainController'
+    })
+    .when('/signup', {
+      templateUrl: 'signup.html',
+      controller: 'MainController'
+    })
     .otherwise({
       redirectTo: '/'
     });
