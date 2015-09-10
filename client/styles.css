@@ -86,3 +86,16 @@ h3 {
 #rating_meters {
   margin-top: 15px;
 }
+
+#signin, #signup {
+  margin-top: 200px;
+  text-align: center;
+}
+
+.signin, .signup {
+  margin-bottom: 10px;
+  width: 175px;
+}
+
+
+

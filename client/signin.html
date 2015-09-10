@@ -1,0 +1,46 @@
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-init="syncResults()">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <div>
+        <a class="navbar-brand" href="#"><img style="width: 25 px; height:25px" src="tomato_map.png"></a>
+      </div>
+    </div>
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Ripe Tomatoes <span class="sr-only">(current)</span></a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="#/signup">Sign Up</a></li>
+        <li><a href="#/results">Back</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="#">Action</a></li>
+            <li><a href="#">Another action</a></li>
+            <li><a href="#">Something else here</a></li>
+            <li role="separator" class="divider"></li>
+            <li><a href="#">Separated link</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav> <!-- end Navbar -->
+
+
+<form id="signin" ng-submit="signin()" >
+  <p>{{ note }}</p>
+  <input name="username" placeholder="Enter username" class="signin" ng-model="user.username" />
+  <br/>
+  <input name="password" placeholder="Enter password" class="signin" ng-model="user.password" type="password" />
+  <br/>
+  <button type="submit">Submit</button>
+</form>

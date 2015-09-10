@@ -11,12 +11,36 @@ angular.module('ripeT', ['ngMap'])
       templateUrl: 'searchResults.html',
       controller: 'MainController'
     })
+    .when('/signin', {
+      templateUrl: 'signin.html',
+      controller: 'AuthController'
+    })
+    .when('/signup', {
+      templateUrl: 'signup.html',
+      controller: 'AuthController'
+    })
+    // .when('/user', {
+    //   templateUrl: 'home.html',
+    //   controller: 'MainController'
+    // })
     .otherwise({
       redirectTo: '/'
     });
 })
 
-.controller('MainController', function ($scope, $location, Factory) {
+.controller('MainController', function ($scope, $location, Search, State, Auth) {
+
+  $scope.add = function () {
+  };
+
+  $scope.signout = function () {
+    Auth.signout();
+    State.loggedIn = false;
+    State.username = '';
+  };
+
+  $scope.username = State.username;
+
   $scope.calculateTomatoRating = function(num){
     return new Array(num);
   };
@@ -57,21 +81,22 @@ angular.module('ripeT', ['ngMap'])
 
   $scope.loadResults = function () {
     console.log("loading results");
-    Factory.getResults($scope.location, $scope.name).then(function (resp) {
+    Search.getResults($scope.location, $scope.name).then(function (resp) {
       if (resp['error']) {
-        Factory.results = $scope.results = resp;
+        Search.results = $scope.results = resp;
         $location.path('results');
       } else {
-        Factory.results = $scope.results = resp.results;
+        Search.results = $scope.results = resp.results;
         $location.path('results');
       }
     });
   };
 
+  $scope.loggedIn = State.loggedIn;
   $scope.error = '';
 
   $scope.syncResults = function () {
-    $scope.results = Factory.results;
+    $scope.results = Search.results;
   };
 
   $scope.initializeMap = function () {
@@ -108,8 +133,8 @@ angular.module('ripeT', ['ngMap'])
   };
 
 })
-.factory('Factory', function ($http) {
 
+.factory('Search', function ($http) {
   var getResults = function (loc, rest) {
     return $http({
       method: 'POST',
@@ -132,6 +157,83 @@ angular.module('ripeT', ['ngMap'])
   }
 })
 
+.controller('AuthController', function (Auth, $window, State, $scope, $location) {
+  $scope.loggedIn = State.loggedIn;
+  $scope.user = {};
+  $scope.noteInit = function () {
+    $scope.note = '';
+  };
+  $scope.signin = function () {
+    Auth.signin($scope.user)
+      .then(function (token) {
+        if (token !== 'null') {
+          State.username = $scope.user.username;
+          $window.localStorage.setItem('com.ripeT', token);
+          $location.path('/results');
+          State.loggedIn = true;
+        } else {
+          $scope.note = 'incorrect username or password';
+        }
+      });
+  };
+  $scope.signup = function () {
+    Auth.signup($scope.user)
+      .then(function (token) {
+        if (token !== 'null') {
+          State.username = $scope.user.username;
+          $window.localStorage.setItem('com.ripeT', token);
+          $location.path('/results');
+          State.loggedIn = true;
+        } else {
+          $scope.note = 'username already taken';
+        }
+      });
+  };
+})
+
+.factory('Auth', function ($http, $window, $location) {
+
+  var signup = function (user) {
+    return $http({
+      method: 'POST',
+      url: '/signup',
+      data: user
+    })
+    .then(function (resp) {
+      return resp.data.token;
+    });
+  };
+
+  var signin = function (user) {
+    return $http({
+      method: 'POST',
+      url: '/signin',
+      data: user
+    })
+    .then(function (resp) {
+      return resp.data.token;
+    });
+  };
+
+  var signout = function () {
+    $window.localStorage.removeItem('com.ripeT');
+  };
+
+  var isAuth = function () {
+    return !!$window.localStorage.getItem('com.ripeT');
+  };
+
+  return {
+    signup: signup,
+    signin: signin,
+    isAuth: isAuth,
+    signout: signout
+  };
+})
+
+.factory('State', function () {
+  return {loggedIn: false};
+});
 
 //name, address, ratings, GEO,
 

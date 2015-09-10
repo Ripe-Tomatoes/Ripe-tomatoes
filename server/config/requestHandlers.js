@@ -1,7 +1,7 @@
 //Handles requests from clients
-var parser = require('body-parser');
-var querystring = require('querystring');
-var utils = require('./utils.js');
+var parser  = require('body-parser'),
+    utils   = require('./utils.js'),
+    userController = require('../users/userController.js');
 
 //Server request handler
 //Exported to: server.js
@@ -44,12 +44,12 @@ module.exports = function (app, express){
         }
       }
       return true;
-    }
+    };
 
     //Resets errors between all API calls
     var resetErrors = function () {
       noErrors = true;
-    }
+    };
 
     //Takes in service name ("yelp" or "foursquare") and submits an request to the given service. If any given API provides 
     //an error, this function will mark the query as having an error. If the API call is successful, it updates the tor 
@@ -109,5 +109,9 @@ module.exports = function (app, express){
     apiSearch('foursquare');
   });
 
+  // app.post('/signin', );
+
+  app.post('/signup', userController.signup);
+  app.post('/signin', userController.signin);
 };
 
