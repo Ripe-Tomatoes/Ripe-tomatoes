@@ -19,16 +19,28 @@ angular.module('ripeT', ['ngMap'])
       templateUrl: 'signup.html',
       controller: 'AuthController'
     })
-    .when('/user', {
-      templateUrl: 'home.html',
-      controller: 'MainController'
-    })
+    // .when('/user', {
+    //   templateUrl: 'home.html',
+    //   controller: 'MainController'
+    // })
     .otherwise({
       redirectTo: '/'
     });
 })
 
-.controller('MainController', function ($scope, $location, Search, State) {
+.controller('MainController', function ($scope, $location, Search, State, Auth) {
+
+  $scope.add = function () {
+  };
+
+  $scope.signout = function () {
+    Auth.signout();
+    State.loggedIn = false;
+    State.username = '';
+  };
+
+  $scope.username = State.username;
+
   $scope.calculateTomatoRating = function(num){
     return new Array(num);
   };
@@ -151,24 +163,20 @@ angular.module('ripeT', ['ngMap'])
   $scope.signin = function () {
     Auth.signin($scope.user)
       .then(function (token) {
+        State.username = $scope.user.username;
         $window.localStorage.setItem('com.ripeT', token);
         $location.path('/results');
         State.loggedIn = true;
-      })
-        .catch(function (err) {
-          console.log(err);
-        });
+      });
   };
   $scope.signup = function () {
     Auth.signup($scope.user)
       .then(function (token) {
+        State.username = $scope.user.username;
         $window.localStorage.setItem('com.ripeT', token);
         $location.path('/results');
         State.loggedIn = true;
-      })
-        .catch(function (err) {
-          console.log(err);
-        });
+      });
   };
 })
 
@@ -197,7 +205,7 @@ angular.module('ripeT', ['ngMap'])
   };
 
   var signout = function () {
-
+    $window.localStorage.removeItem('com.ripeT');
   };
 
   var isAuth = function () {

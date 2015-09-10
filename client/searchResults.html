@@ -27,7 +27,7 @@
       <ul class="nav navbar-nav navbar-right">
         <li ng-hide="loggedIn"><a href="#/signin">Sign In</a></li>
         <li ng-hide="loggedIn"><a href="#/signup">Sign Up</a></li>
-        <li ng-show="loggedIn"><a href="#/user">Home</a></li>
+        <li ng-show="loggedIn"><a href="#/user">{{ username }}</a></li>
         <li ng-show="loggedIn"><a href="#/" ng-click="signout()">Sign Out</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -106,8 +106,8 @@
           <span class="glyphicon glyphicon-comment"></span><a href="#">  View Comments (potential feature)</a>
         </div> <!-- end add_to_favorites -->
       <!-- Add to favorites -->
-        <div id="add_to_favorites" class="user-action">
-          <span class="glyphicon glyphicon-star-empty"></span><a href="#">  Add to Favorites (potential feature)</a>
+        <div id="add_to_favorites" class="user-action" ng-show="loggedIn">
+          <span class="glyphicon glyphicon-star-empty"></span><a ng-click="add()"> Add to Favorites </a>
         </div> <!-- end add_to_favorites -->
       </div> <!-- end user_actions div -->
     </div> <!-- end search_result_item -->
