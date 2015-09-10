@@ -24,7 +24,7 @@ angular.module('ripeT', ['ngMap'])
     });
 })
 
-.controller('MainController', function ($scope, $location, Factory) {
+.controller('MainController', function ($scope, $location, Search) {
   $scope.calculateTomatoRating = function(num){
     return new Array(num);
   };
@@ -65,12 +65,12 @@ angular.module('ripeT', ['ngMap'])
 
   $scope.loadResults = function () {
     console.log("loading results");
-    Factory.getResults($scope.location, $scope.name).then(function (resp) {
+    Search.getResults($scope.location, $scope.name).then(function (resp) {
       if (resp['error']) {
-        Factory.results = $scope.results = resp;
+        Search.results = $scope.results = resp;
         $location.path('results');
       } else {
-        Factory.results = $scope.results = resp.results;
+        Search.results = $scope.results = resp.results;
         $location.path('results');
       }
     });
@@ -79,7 +79,7 @@ angular.module('ripeT', ['ngMap'])
   $scope.error = '';
 
   $scope.syncResults = function () {
-    $scope.results = Factory.results;
+    $scope.results = Search.results;
   };
 
   $scope.initializeMap = function () {
@@ -116,8 +116,8 @@ angular.module('ripeT', ['ngMap'])
   };
 
 })
-.factory('Factory', function ($http) {
 
+.factory('Search', function ($http) {
   var getResults = function (loc, rest) {
     return $http({
       method: 'POST',
@@ -140,6 +140,11 @@ angular.module('ripeT', ['ngMap'])
   }
 })
 
+
+// .factory('Auth', function () {
+
+
+// })
 
 //name, address, ratings, GEO,
 
