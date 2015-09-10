@@ -121,5 +121,9 @@ module.exports = function (app, express){
       userController.retrieveFavorites(req, res);
     }
   });
+
+  app.post('/check', function (req, res) {
+    userController.checkAuth(req, res);
+  });
 };
 

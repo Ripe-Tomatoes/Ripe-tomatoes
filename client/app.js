@@ -37,12 +37,15 @@ angular.module('ripeT', ['ngMap'])
   };
 
   $scope.retrieve = function () {
-    // var token = $window.localStorage.getItem('com.ripeT');
-    var results = [];
-    User.retrieveFavorites($location.$$path.slice(6)).then(function (resp) {
+    var token   = $window.localStorage.getItem('com.ripeT'),
+        results = [],
+        loggedIn;
+
+    User.retrieveFavorites($location.$$path.slice(6), token).then(function (resp) {
+      State.loggedIn = resp.data.loggedIn;
+      $scope.loggedIn = State.loggedIn;
       resp.data.results.forEach(function (item) {
         Search.getResults(item[0], item[2]).then(function (resp) {
-          console.log('in here', item[1], resp.results);
           resp.results.forEach(function (result) {
             if (item[1] === result.address[0]) {
               results.push(result);
@@ -53,6 +56,8 @@ angular.module('ripeT', ['ngMap'])
     });
     State.favorites = results;
     $scope.favorites = State.favorites;
+    $scope.username = $location.$$path.slice(6);
+
   };
 
   $scope.getUsername = function () {
@@ -286,12 +291,13 @@ angular.module('ripeT', ['ngMap'])
     // });
   };
 
-  var retrieveFavorites = function (username) {
+  var retrieveFavorites = function (username, token) {
     return $http({
       method: 'POST',
       url: '/user/' + username,
       data: {
-        op: 'retrieve'
+        op: 'retrieve',
+        token: token
       }
     });
   };

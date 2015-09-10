@@ -73,11 +73,9 @@ module.exports = {
         name      = req.body.name;
     
     var user = jwt.decode(token, 'secret');
-    console.log(username, location, address, name, user.username);
     var pack = [location, address, name];
 
     if (user.username === username) {
-      console.log('IN HERE');
       var update = Q.nbind(User.update, User);
       update(
         { username: username },
@@ -87,14 +85,24 @@ module.exports = {
   },
 
   retrieveFavorites: function (req, res) {
-    var username  = req.params.name;
+    var username  = req.params.name,
+        token     = req.body.token,
+        loggedIn = false;
+
+    var user = token ? jwt.decode(token, 'secret').username : 'null';
+
+    if (user === username) {
+      loggedIn = true;
+    }
 
     var findOne = Q.nbind(User.findOne, User);
     findOne({username: username})
       .then(function(user) {
-        res.json({ results: user.favorites });
+        res.json({
+          results: user.favorites,
+          loggedIn: loggedIn
+        });
       });
-
   }
 }
 
