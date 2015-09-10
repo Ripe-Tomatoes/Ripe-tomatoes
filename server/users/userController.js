@@ -87,18 +87,14 @@ module.exports = {
   },
 
   retrieveFavorites: function (req, res) {
-    var username  = req.params.name,
-        token     = req.body.token;
+    var username  = req.params.name;
 
-    var user = jwt.decode(token, 'secret');
+    var findOne = Q.nbind(User.findOne, User);
+    findOne({username: username})
+      .then(function(user) {
+        res.json({ results: user.favorites });
+      });
 
-    if (user.username === username) {
-      var findOne = Q.nbind(User.findOne, User);
-      findOne({username: username})
-        .then(function(user) {
-          res.json({ results: user.favorites });
-        });
-    }
   }
 }
 
