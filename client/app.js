@@ -26,11 +26,26 @@ angular.module('ripeT', ['ngMap'])
     .otherwise({
       redirectTo: '/'
     });
+
+    // $httpProvider.interceptors.push('AttachTokens');
+})
+
+.factory('AttachTokens', function ($window) {
+  var attach = function (object) {
+    var jwt = $window.localStorage.getItem('com.ripeT');
+    if (jwt) {
+      object.headers['x-access-token'] = jwt;
+    }
+    object.headers['Allow-Control-Allow-Origin'] = '*';
+    return object;
+  };
+  return attach;
 })
 
 .controller('MainController', function ($scope, $location, Search, State, Auth) {
 
   $scope.add = function () {
+
   };
 
   $scope.signout = function () {
