@@ -42,10 +42,12 @@ angular.module('ripeT', ['ngMap'])
     User.retrieveFavorites($scope.username, token).then(function (resp) {
       resp.data.results.forEach(function (item) {
         Search.getResults(item[0], item[2]).then(function (resp) {
-          if (item[1] === resp.results[0].address[0]) {
-            console.log('in here', resp.results[0]);
-            results.push(resp.results[0]);
-          }
+          console.log('in here', item[1], resp.results);
+          resp.results.forEach(function (result) {
+            if (item[1] === result.address[0]) {
+              results.push(result);
+            }
+          })
         });
       });
     });
