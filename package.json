@@ -4,11 +4,15 @@
   "description": "Restaurant information agregator",
   "main": "server.js",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.13.3",
     "express": "^4.13.3",
+    "jwt-simple": "^0.2.0",
+    "mongoose": "^4.1.0",
     "oauth": "^0.9.13",
     "querystring": "^0.2.0",
     "request": "^2.61.0",
+    "q": "^1.0.1",
     "yelp": "^0.2.0"
   },
   "devDependencies": {},
