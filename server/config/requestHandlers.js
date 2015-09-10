@@ -113,5 +113,13 @@ module.exports = function (app, express){
 
   app.post('/signup', userController.signup);
   app.post('/signin', userController.signin);
+
+  app.post('/user/:name', function (req, res) {
+    if (req.body.op === 'add') {
+      userController.addFavorite(req, res);
+    } else if (req.body.op === 'retrieve') {
+      userController.retrieveFavorites(req, res);
+    }
+  });
 };
 

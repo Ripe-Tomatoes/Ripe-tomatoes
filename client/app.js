@@ -19,39 +19,50 @@ angular.module('ripeT', ['ngMap'])
       templateUrl: 'signup.html',
       controller: 'AuthController'
     })
-    // .when('/user', {
-    //   templateUrl: 'home.html',
-    //   controller: 'MainController'
-    // })
+    .when('/user', {
+      templateUrl: 'user.html',
+      controller: 'MainController'
+    })
     .otherwise({
       redirectTo: '/'
     });
 
-    // $httpProvider.interceptors.push('AttachTokens');
 })
 
-.factory('AttachTokens', function ($window) {
-  var attach = function (object) {
-    var jwt = $window.localStorage.getItem('com.ripeT');
-    if (jwt) {
-      object.headers['x-access-token'] = jwt;
-    }
-    object.headers['Allow-Control-Allow-Origin'] = '*';
-    return object;
+.controller('MainController', function ($scope, $location, Search, State, Auth, User, $window) {
+
+  $scope.add = function (address, name) {
+    var token = $window.localStorage.getItem('com.ripeT');
+    User.addFavorite($scope.username, token, State.location, address, name);
   };
-  return attach;
-})
 
-.controller('MainController', function ($scope, $location, Search, State, Auth) {
+  $scope.retrieve = function () {
+    var token = $window.localStorage.getItem('com.ripeT');
+    var results = [];
+    User.retrieveFavorites($scope.username, token).then(function (resp) {
+      resp.data.results.forEach(function (item) {
+        Search.getResults(item[0], item[2]).then(function (resp) {
+          if (item[1] === resp.results[0].address[0]) {
+            console.log('in here', resp.results[0]);
+            results.push(resp.results[0]);
+          }
+        });
+      });
+    });
+    State.favorites = results;
+    $scope.favorites = State.favorites;
+    $location.path('user');
+  };
 
-  $scope.add = function () {
-
+  $scope.syncUser = function () {
+    $scope.favorites = State.favorites;
   };
 
   $scope.signout = function () {
     Auth.signout();
     State.loggedIn = false;
     State.username = '';
+    State.favorites = [];
   };
 
   $scope.username = State.username;
@@ -96,6 +107,7 @@ angular.module('ripeT', ['ngMap'])
 
   $scope.loadResults = function () {
     console.log("loading results");
+    State.location = $scope.location;
     Search.getResults($scope.location, $scope.name).then(function (resp) {
       if (resp['error']) {
         Search.results = $scope.results = resp;
@@ -247,8 +259,48 @@ angular.module('ripeT', ['ngMap'])
 })
 
 .factory('State', function () {
-  return {loggedIn: false};
-});
+  return {
+    username: '',
+    loggedIn: false,
+    location: '',
+    favorites: []
+  };
+})
+
+.factory('User', function ($http) {
+  var addFavorite = function (username, token, location, address, name) {
+    return $http({
+      method: 'POST',
+      url: '/user/' + username,
+      data: {
+        op: 'add',
+        token: token,
+        location: location,
+        address: address,
+        name: name
+      }
+    })
+    // .then(function (resp) {
+    //   return resp.data.outcome;
+    // });
+  };
+
+  var retrieveFavorites = function (username, token) {
+    return $http({
+      method: 'POST',
+      url: '/user/' + username,
+      data: {
+        op: 'retrieve',
+        token: token
+      }
+    })
+  };
+
+  return {
+    addFavorite: addFavorite,
+    retrieveFavorites: retrieveFavorites
+  };
+})
 
 //name, address, ratings, GEO,
 
