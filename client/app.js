@@ -19,7 +19,7 @@ angular.module('ripeT', ['ngMap'])
       templateUrl: 'signup.html',
       controller: 'AuthController'
     })
-    .when('/user', {
+    .when('/user/:name', {
       templateUrl: 'user.html',
       controller: 'MainController'
     })
@@ -52,11 +52,6 @@ angular.module('ripeT', ['ngMap'])
       });
     });
     State.favorites = results;
-    $scope.favorites = State.favorites;
-    $location.path('user');
-  };
-
-  $scope.syncUser = function () {
     $scope.favorites = State.favorites;
   };
 
