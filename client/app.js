@@ -13,10 +13,14 @@ angular.module('ripeT', ['ngMap'])
     })
     .when('/signin', {
       templateUrl: 'signin.html',
-      controller: 'MainController'
+      controller: 'AuthController'
     })
     .when('/signup', {
       templateUrl: 'signup.html',
+      controller: 'AuthController'
+    })
+    .when('/user', {
+      templateUrl: 'home.html',
       controller: 'MainController'
     })
     .otherwise({
@@ -24,7 +28,7 @@ angular.module('ripeT', ['ngMap'])
     });
 })
 
-.controller('MainController', function ($scope, $location, Search) {
+.controller('MainController', function ($scope, $location, Search, State) {
   $scope.calculateTomatoRating = function(num){
     return new Array(num);
   };
@@ -76,6 +80,7 @@ angular.module('ripeT', ['ngMap'])
     });
   };
 
+  $scope.loggedIn = State.loggedIn;
   $scope.error = '';
 
   $scope.syncResults = function () {
@@ -140,11 +145,31 @@ angular.module('ripeT', ['ngMap'])
   }
 })
 
-.controller('AuthController', function (Auth) {
-
-
-
-
+.controller('AuthController', function (Auth, $window, State, $scope, $location) {
+  $scope.loggedIn = State.loggedIn;
+  $scope.user = {};
+  $scope.signin = function () {
+    Auth.signin($scope.user)
+      .then(function (token) {
+        $window.localStorage.setItem('com.ripeT', token);
+        $location.path('/results');
+        State.loggedIn = true;
+      })
+        .catch(function (err) {
+          console.log(err);
+        });
+  };
+  $scope.signup = function () {
+    Auth.signup($scope.user)
+      .then(function (token) {
+        $window.localStorage.setItem('com.ripeT', token);
+        $location.path('/results');
+        State.loggedIn = true;
+      })
+        .catch(function (err) {
+          console.log(err);
+        });
+  };
 })
 
 .factory('Auth', function ($http, $window, $location) {
@@ -163,7 +188,7 @@ angular.module('ripeT', ['ngMap'])
   var signin = function (user) {
     return $http({
       method: 'POST',
-      url: 'signin',
+      url: '/signin',
       data: user
     })
     .then(function (resp) {
@@ -178,8 +203,18 @@ angular.module('ripeT', ['ngMap'])
   var isAuth = function () {
     return !!$window.localStorage.getItem('com.ripeT');
   };
-  
+
+  return {
+    signup: signup,
+    signin: signin,
+    isAuth: isAuth,
+    signout: signout
+  };
 })
+
+.factory('State', function () {
+  return {loggedIn: false};
+});
 
 //name, address, ratings, GEO,
 

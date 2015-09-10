@@ -29,7 +29,37 @@ module.exports = {
       });
   },
 
-  signup: function (req, res, )
+  signup: function (req, res, next) {
+    var username  = req.body.username,
+        password  = req.body.password,
+        create,
+        newUser;
 
-
+    var findUser = Q.nbind(User.findOne, User);
+    console.log(req.body);
+    findUser({username: username})
+      .then(function(user) {
+        if (user) {
+          console.log('. . . user exists . . .');
+          next(new Error('User already exist!'));
+        } else {
+          console.log('...trying to create');
+          create = Q.nbind(User.create, User);
+          newUser = {
+            username: username,
+            password: password
+          };
+          return create(newUser);
+        }
+      })
+      .then(function (user) {
+        console.log('at token stage');
+        var token = jwt.encode(user, 'secret');
+        res.json({token: token});
+      })
+      .fail(function (error) {
+        console.log(error);
+        next(error);
+      });
+  }
 }
