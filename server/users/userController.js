@@ -19,7 +19,8 @@ module.exports = {
                 var token = jwt.encode(user, 'secret');
                 res.json({token: token});
               } else {
-                return next(new Error('No user'));
+                res.json({token: 'null'});
+                return next();
               }
             });
         }
@@ -40,10 +41,9 @@ module.exports = {
     findUser({username: username})
       .then(function(user) {
         if (user) {
-          console.log('. . . user exists . . .');
-          next(new Error('User already exist!'));
+          res.json({token: 'null'});
+          next();
         } else {
-          console.log('...trying to create');
           create = Q.nbind(User.create, User);
           newUser = {
             username: username,
@@ -54,9 +54,10 @@ module.exports = {
         }
       })
       .then(function (user) {
-        console.log('at token stage');
-        var token = jwt.encode(user, 'secret');
-        res.json({token: token});
+        if (user) {
+          var token = jwt.encode(user, 'secret');
+          res.json({token: token});
+        }
       })
       .fail(function (error) {
         console.log(error);

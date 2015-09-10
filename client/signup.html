@@ -35,9 +35,9 @@
   </div><!-- /.container-fluid -->
 </nav> <!-- end Navbar -->
 
-
-<form id="signup" ng-submit="signup()">
-  <input name="username" placeholder="Enter desired username" class="signup" ng-model="user.username" />
+<form id="signup" ng-submit="signup()" ng-init="noteInit">
+  <p>{{ note }}</p>
+  <input name="username" placeholder="Enter desired username" class="signup" ng-model="user.username"/>
   <br/>
   <input name="password" placeholder="Enter desired password" class="signup" ng-model="user.password" />
   <br/>

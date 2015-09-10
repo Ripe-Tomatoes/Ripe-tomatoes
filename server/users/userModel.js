@@ -48,7 +48,7 @@ UserSchema.pre('save', function (next) {
       if (err) {
         return next(err);
       }
-
+      
       user.password = hash;
       user.salt = salt;
       next();
