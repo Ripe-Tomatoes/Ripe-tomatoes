@@ -160,22 +160,33 @@ angular.module('ripeT', ['ngMap'])
 .controller('AuthController', function (Auth, $window, State, $scope, $location) {
   $scope.loggedIn = State.loggedIn;
   $scope.user = {};
+  $scope.noteInit = function () {
+    $scope.note = '';
+  };
   $scope.signin = function () {
     Auth.signin($scope.user)
       .then(function (token) {
-        State.username = $scope.user.username;
-        $window.localStorage.setItem('com.ripeT', token);
-        $location.path('/results');
-        State.loggedIn = true;
+        if (token !== 'null') {
+          State.username = $scope.user.username;
+          $window.localStorage.setItem('com.ripeT', token);
+          $location.path('/results');
+          State.loggedIn = true;
+        } else {
+          $scope.note = 'incorrect username or password';
+        }
       });
   };
   $scope.signup = function () {
     Auth.signup($scope.user)
       .then(function (token) {
-        State.username = $scope.user.username;
-        $window.localStorage.setItem('com.ripeT', token);
-        $location.path('/results');
-        State.loggedIn = true;
+        if (token !== 'null') {
+          State.username = $scope.user.username;
+          $window.localStorage.setItem('com.ripeT', token);
+          $location.path('/results');
+          State.loggedIn = true;
+        } else {
+          $scope.note = 'username already taken';
+        }
       });
   };
 })
