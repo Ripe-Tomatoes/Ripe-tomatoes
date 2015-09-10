@@ -140,11 +140,46 @@ angular.module('ripeT', ['ngMap'])
   }
 })
 
+.controller('AuthController', function (Auth) {
 
-// .factory('Auth', function () {
 
 
-// })
+
+})
+
+.factory('Auth', function ($http, $window, $location) {
+
+  var signup = function (user) {
+    return $http({
+      method: 'POST',
+      url: '/signup',
+      data: user
+    })
+    .then(function (resp) {
+      return resp.data.token;
+    });
+  };
+
+  var signin = function (user) {
+    return $http({
+      method: 'POST',
+      url: 'signin',
+      data: user
+    })
+    .then(function (resp) {
+      return resp.data.token;
+    });
+  };
+
+  var signout = function () {
+
+  };
+
+  var isAuth = function () {
+    return !!$window.localStorage.getItem('com.ripeT');
+  };
+  
+})
 
 //name, address, ratings, GEO,
 
