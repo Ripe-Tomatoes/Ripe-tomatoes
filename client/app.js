@@ -84,6 +84,9 @@ angular.module('ripeT', ['ngMap'])
         State.username = '';
       }
     });
+    if ($location.$$path.slice(0, 6) === '/user/') {
+      $scope.username = State.username = $location.$$path.slice(6);
+    }
   };
 
   $scope.signout = function () {
