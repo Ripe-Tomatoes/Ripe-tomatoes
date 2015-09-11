@@ -129,7 +129,7 @@ module.exports = {
   },
 
   checkUser: function (req, res) {
-    var token     = req.body.token;
+    var token = req.body.token;
 
     var user = token ? jwt.decode(token, 'secret').username : 'null';
 

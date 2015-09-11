@@ -72,11 +72,16 @@ angular.module('ripeT', ['ngMap'])
     $scope.username = $location.$$path.slice(6);
   };
 
+  $scope.checkUserPage = function () {
+    if ($location.$$path.slice(0, 6) === '/user/') {
+      $scope.pagename = $location.$$path.slice(6);
+    }
+  };
+
   $scope.checkUser = function () {
     var token = $window.localStorage.getItem('com.ripeT');
     User.checkUser(token).then(function (resp) {
       if (resp.data.loggedIn) {
-        console.log(resp.data.loggedIn)
         $scope.loggedIn = State.loggedIn = true;
         $scope.username = State.username = resp.data.loggedIn;
       } else {
@@ -84,9 +89,6 @@ angular.module('ripeT', ['ngMap'])
         State.username = '';
       }
     });
-    if ($location.$$path.slice(0, 6) === '/user/') {
-      $scope.username = State.username = $location.$$path.slice(6);
-    }
   };
 
   $scope.signout = function () {
