@@ -96,6 +96,7 @@ angular.module('ripeT', ['ngMap'])
     State.loggedIn = false;
     State.username = '';
     State.favorites = [];
+    $location.path('');
   };
 
   $scope.username = State.username;
