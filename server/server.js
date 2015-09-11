@@ -6,7 +6,7 @@ var express = require('express'),
     querystring = require('querystring'),
     mongoose    = require('mongoose');
 
-// See http://www.yelp.com/developers/documentation/v2/search_api
+// See http://www.yelp.com/developers/documentation/v2/search_api 
 
 var app = express();
 
@@ -22,10 +22,10 @@ app.use(express.static(__dirname + '/../client'));
 // {"searchTerm":"Restaurant","location":"Location"}
 // app.use(parser.json());
 
-var port = process.env.PORT || 3000;
-var server = app.listen(port, function () {
-  console.log('Example app listening at http://%s', port);
- // mongo server up and running (still working on using tokens for user-functionality)
+var server = app.listen(3000, function () {
+  var host = server.address().address;
+  var port = server.address().port;
+  console.log('Example app listening at http://%s:%s', host, port);
 });
 
 requestHandlers(app, express);

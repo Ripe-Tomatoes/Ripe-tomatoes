@@ -38,7 +38,6 @@ module.exports = {
         newUser;
 
     var findUser = Q.nbind(User.findOne, User);
-    console.log(req.body);
     findUser({username: username})
       .then(function(user) {
         if (user) {
@@ -57,12 +56,75 @@ module.exports = {
       .then(function (user) {
         if (user) {
           var token = jwt.encode(user, 'secret');
-          res.json({token: token});
+          res.json({ token: token });
         }
       })
       .fail(function (error) {
         console.log(error);
         next(error);
       });
+  },
+
+  addFavorite: function (req, res) {
+    var username  = req.params.name,
+        location  = req.body.location,
+        token     = req.body.token,
+        address   = req.body.address,
+        name      = req.body.name;
+    
+    var user = jwt.decode(token, 'secret');
+    var pack = { location: location, address: address, name: name };
+
+    if (user.username === username) {
+      var update = Q.nbind(User.update, User);
+      update(
+        { username: username },
+        { $addToSet: { favorites: pack } }
+      );
+    }
+  },
+
+  retrieveFavorites: function (req, res) {
+    var username  = req.params.name,
+        token     = req.body.token,
+        loggedIn = false;
+
+    var user = token ? jwt.decode(token, 'secret').username : 'null';
+
+    if (user === username) {
+      loggedIn = true;
+    }
+
+    var findOne = Q.nbind(User.findOne, User);
+    findOne({ username: username })
+      .then(function(user) {
+        res.json({
+          results: user.favorites,
+          loggedIn: loggedIn
+        });
+      });
+  },
+
+  removeFromFavorites: function (req, res) {
+    var username  = req.params.name,
+        token     = req.body.token,
+        address   = req.body.address,
+        name      = req.body.name,
+        newFavorites = [];
+
+    var user = token ? jwt.decode(token, 'secret').username : 'null';
+
+    if (user === username) {
+      
+      var update = Q.nbind(User.update, User);
+      update(
+        { username: username },
+        { $pull: { favorites: { $in: [ address ] } } }
+      )
+      .then(function() {
+        res.end();
+      });
+    }
   }
 }
+
