@@ -108,7 +108,7 @@
           <span class="glyphicon glyphicon-comment"></span><a href="#">  View Comments (potential feature)</a>
         </div> <!-- end add_to_favorites -->
       <!-- Remove to favorites -->
-        <div id="add_to_favorites" class="user-action" ng-show="loggedIn">
+        <div id="add_to_favorites" class="user-action" ng-show="checkIfHome()" >
           <span class="glyphicon glyphicon-star-empty"></span><a ng-click="remove(restaurant.address[0], restaurant.name)"> Remove from Favorites </a>
         </div> <!-- end remove_to_favorites -->
       </div> <!-- end user_actions div -->

@@ -68,6 +68,10 @@ angular.module('ripeT', ['ngMap'])
     $scope.favorites = State.favorites;
   };
 
+  $scope.checkIfHome = function () {
+    return $scope.pagename === $scope.username;
+  };
+
   $scope.getUsername = function () {
     $scope.username = $location.$$path.slice(6);
   };
