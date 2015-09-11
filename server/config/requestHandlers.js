@@ -119,6 +119,8 @@ module.exports = function (app, express){
       userController.addFavorite(req, res);
     } else if (req.body.op === 'retrieve') {
       userController.retrieveFavorites(req, res);
+    } else if (req.body.op === 'remove') {
+      userController.removeFromFavorites(req, res);
     }
   });
 

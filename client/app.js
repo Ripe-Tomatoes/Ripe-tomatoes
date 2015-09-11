@@ -36,6 +36,14 @@ angular.module('ripeT', ['ngMap'])
     User.addFavorite($scope.username, token, State.location, address, name);
   };
 
+  $scope.remove = function (address, name) {
+    var token = $window.localStorage.getItem('com.ripeT');
+    User.removeItem($scope.username, token, address, name).then(function() {
+      console.log('yolo');
+      $window.location.reload();
+    });
+  };
+
   $scope.retrieve = function () {
     var token   = $window.localStorage.getItem('com.ripeT'),
         results = [],
@@ -302,9 +310,23 @@ angular.module('ripeT', ['ngMap'])
     });
   };
 
+  var removeItem = function (username, token, address, name) {
+    return $http({
+      method: 'POST',
+      url: '/user/' + username,
+      data: {
+        op: 'remove',
+        token: token,
+        address: address,
+        name: name
+      }
+    })
+  };
+
   return {
     addFavorite: addFavorite,
-    retrieveFavorites: retrieveFavorites
+    retrieveFavorites: retrieveFavorites,
+    removeItem: removeItem
   };
 })
 

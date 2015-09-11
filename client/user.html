@@ -109,7 +109,7 @@
         </div> <!-- end add_to_favorites -->
       <!-- Remove to favorites -->
         <div id="add_to_favorites" class="user-action" ng-show="loggedIn">
-          <span class="glyphicon glyphicon-star-empty"></span><a> Remove from Favorites </a>
+          <span class="glyphicon glyphicon-star-empty"></span><a ng-click="remove(restaurant.address[0], restaurant.name)"> Remove from Favorites </a>
         </div> <!-- end remove_to_favorites -->
       </div> <!-- end user_actions div -->
     </div> <!-- end search_result_item -->

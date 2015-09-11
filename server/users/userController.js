@@ -73,7 +73,7 @@ module.exports = {
         name      = req.body.name;
     
     var user = jwt.decode(token, 'secret');
-    var pack = [location, address, name];
+    var pack = { location: location, address: address, name: name };
 
     if (user.username === username) {
       var update = Q.nbind(User.update, User);
@@ -96,13 +96,35 @@ module.exports = {
     }
 
     var findOne = Q.nbind(User.findOne, User);
-    findOne({username: username})
+    findOne({ username: username })
       .then(function(user) {
         res.json({
           results: user.favorites,
           loggedIn: loggedIn
         });
       });
+  },
+
+  removeFromFavorites: function (req, res) {
+    var username  = req.params.name,
+        token     = req.body.token,
+        address   = req.body.address,
+        name      = req.body.name,
+        newFavorites = [];
+
+    var user = token ? jwt.decode(token, 'secret').username : 'null';
+
+    if (user === username) {
+      
+      var update = Q.nbind(User.update, User);
+      update(
+        { username: username },
+        { $pull: { favorites: { $in: [ address ] } } }
+      )
+      .then(function() {
+        res.end();
+      });
+    }
   }
 }
 
