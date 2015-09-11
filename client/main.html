@@ -7,7 +7,7 @@
 <div ng-show="loggedIn">
   <a href="#/results">Back</a>
 </div>
-<div class="main" >
+<div class="main" ng-init="checkUser()">
   <img id="mainImage" src="tomato.png">
   <h1>Ripe Tomatoes</h1>
   <h2>Look in more than one basket.</h2>

@@ -68,15 +68,24 @@ angular.module('ripeT', ['ngMap'])
     $scope.favorites = State.favorites;
   };
 
+  $scope.checkIfHome = function () {
+    return $scope.pagename === $scope.username;
+  };
+
   $scope.getUsername = function () {
     $scope.username = $location.$$path.slice(6);
+  };
+
+  $scope.checkUserPage = function () {
+    if ($location.$$path.slice(0, 6) === '/user/') {
+      $scope.pagename = $location.$$path.slice(6);
+    }
   };
 
   $scope.checkUser = function () {
     var token = $window.localStorage.getItem('com.ripeT');
     User.checkUser(token).then(function (resp) {
       if (resp.data.loggedIn) {
-        console.log(resp.data.loggedIn)
         $scope.loggedIn = State.loggedIn = true;
         $scope.username = State.username = resp.data.loggedIn;
       } else {
@@ -91,6 +100,7 @@ angular.module('ripeT', ['ngMap'])
     State.loggedIn = false;
     State.username = '';
     State.favorites = [];
+    $location.path('');
   };
 
   $scope.username = State.username;
