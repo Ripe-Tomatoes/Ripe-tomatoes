@@ -124,8 +124,6 @@ module.exports = function (app, express){
     }
   });
 
-  app.post('/check', function (req, res) {
-    userController.checkAuth(req, res);
-  });
+  app.post('/check', userController.checkUser);
 };
 

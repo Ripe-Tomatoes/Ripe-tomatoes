@@ -54,22 +54,36 @@ angular.module('ripeT', ['ngMap'])
       $scope.loggedIn = State.loggedIn;
       resp.data.results.forEach(function (item) {
         Search.getResults(item[0], item[2]).then(function (resp) {
-          resp.results.forEach(function (result) {
-            if (item[1] === result.address[0]) {
-              results.push(result);
-            }
-          })
+          if (resp.results) {
+            resp.results.forEach(function (result) {
+              if (item[1] === result.address[0]) {
+                results.push(result);
+              }
+            })
+          }
         });
       });
     });
     State.favorites = results;
     $scope.favorites = State.favorites;
-    $scope.username = $location.$$path.slice(6);
-
   };
 
   $scope.getUsername = function () {
     $scope.username = $location.$$path.slice(6);
+  };
+
+  $scope.checkUser = function () {
+    var token = $window.localStorage.getItem('com.ripeT');
+    User.checkUser(token).then(function (resp) {
+      if (resp.data.loggedIn) {
+        console.log(resp.data.loggedIn)
+        $scope.loggedIn = State.loggedIn = true;
+        $scope.username = State.username = resp.data.loggedIn;
+      } else {
+        State.loggedIn = false;
+        State.username = '';
+      }
+    });
   };
 
   $scope.signout = function () {
@@ -323,10 +337,21 @@ angular.module('ripeT', ['ngMap'])
     })
   };
 
+  var checkUser = function (token) {
+    return $http({
+      method: 'POST',
+      url: '/check',
+      data: {
+        token: token
+      }
+    })
+  }
+
   return {
     addFavorite: addFavorite,
     retrieveFavorites: retrieveFavorites,
-    removeItem: removeItem
+    removeItem: removeItem,
+    checkUser: checkUser
   };
 })
 
