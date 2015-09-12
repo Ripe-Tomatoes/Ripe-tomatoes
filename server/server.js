@@ -11,9 +11,12 @@ var express = require('express'),
 
 var app = express();
 
+var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+                replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } } };
+
 var mongoURI = process.env.MONGOLAB_URI || "mongodb://localhost:27017";
 var mongooseUri = uriUtil.formatMongoose(mongoURI);
-var MongoDB = mongoose.connect(mongooseUri).connection;
+var MongoDB = mongoose.connect(mongooseUri, options).connection;
 MongoDB.on('error', console.error.bind(console, 'connection error: database'));
 MongoDB.once('open', function() {
   console.log("mongodb connection open");
