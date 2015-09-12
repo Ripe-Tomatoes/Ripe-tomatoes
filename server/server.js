@@ -5,14 +5,19 @@ var requestHandlers = require('./config/requestHandlers');
 var express = require('express'),
     querystring = require('querystring'),
     mongoose    = require('mongoose');
+    uriUtil = require('mongodb-uri');
 
-// See http://www.yelp.com/developers/documentation/v2/search_api 
+// See http://www.yelp.com/developers/documentation/v2/search_api
 
 var app = express();
 
-var mongoURI = "mongodb://localhost:27017";
-var MongoDB = mongoose.connect(mongoURI).connection;
-MongoDB.on('error', function(err) { console.log(err.message); });
+var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } },
+                replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } } };
+
+var mongoURI = process.env.MONGOLAB_URI || "mongodb://localhost:27017";
+var mongooseUri = uriUtil.formatMongoose(mongoURI);
+var MongoDB = mongoose.connect(mongooseUri, options).connection;
+MongoDB.on('error', console.error.bind(console, 'connection error: database'));
 MongoDB.once('open', function() {
   console.log("mongodb connection open");
 });
@@ -22,7 +27,7 @@ app.use(express.static(__dirname + '/../client'));
 // {"searchTerm":"Restaurant","location":"Location"}
 // app.use(parser.json());
 
-var server = app.listen(3000, function () {
+var server = app.listen( (process.env.PORT || 3000), function () {
   var host = server.address().address;
   var port = server.address().port;
   console.log('Example app listening at http://%s:%s', host, port);
