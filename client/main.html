@@ -1,0 +1,19 @@
+<div ng-hide="loggedIn">
+  <a href="#/signin">Sign In</a>
+</div>
+<div ng-hide="loggedIn">
+  <a href="#/signup">Sign Up</a>
+</div>
+<div ng-show="loggedIn">
+  <a href="#/results">Back</a>
+</div>
+<div class="main" ng-init="checkUser()">
+  <img id="mainImage" src="tomato.png">
+  <h1>Ripe Tomatoes</h1>
+  <h2>Look in more than one basket.</h2>
+  <form name="searchBar" ng-submit="loadResults()" >
+      <input type="text" name="name" placeholder="Enter restaurant name" ng-model="name" autofocus>
+      <input type="text" name="location" placeholder="Enter location" ng-model="location">
+      <button type="submit" class="search" ng-click="saveLocation()">Submit</button>
+  </form >
+</div>

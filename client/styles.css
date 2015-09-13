@@ -1,0 +1,102 @@
+.main {
+ text-align: center;
+ margin-left: auto;
+ margin-right: auto;
+ margin-top: 0px;
+ margin-bottom: 0px;
+ width: 50%;
+}
+
+#clearer {
+  color: white;
+}
+
+#logo {
+ max-width: 20px;
+ float: left;
+ margin-left: 10px;
+ margin-right: 10px;
+}
+
+#fs-logo {
+  max-width: 20px;
+  max-height: 20px;
+
+}
+
+#navbar {
+ background-color: #34495e;
+ padding: 5px;
+ border-radius: 5px;
+}
+
+h1 {
+ font-size: 5em;
+ color: #34495e;
+ margin-top: 20px;
+ margin-bottom: 0px;
+ text-align: center;
+}
+
+h2 {
+ margin-top: 25px;
+}
+
+h3 {
+ float: left;
+ margin-top: 0px;
+ margin-right: 60%;
+ color: white;
+}
+
+.fs_rating {
+  display: inline;
+}
+#mainImage {
+  margin-top: 100px;
+}
+
+.result {
+  background-color: #34495e;
+  border-radius: 10px;
+  margin: 5px;
+  padding: 10px;
+}
+
+#user_actions {
+  margin-top: 20px;
+}
+
+.name {
+  font-size: 16px;
+}
+
+.user-action {
+  display: inline-block;
+}
+
+.user-action > span > a {
+  margin-left: 50px;
+}
+
+#view_comments {
+  margin-left: 15px;
+}
+
+#rating_meters {
+  margin-top: 15px;
+}
+
+#signin, #signup {
+  margin-top: 200px;
+  text-align: center;
+}
+
+.signin, .signup {
+  margin-bottom: 10px;
+  width: 175px;
+}
+
+#favoritesHeader {
+  margin-top: 100px;
+}
