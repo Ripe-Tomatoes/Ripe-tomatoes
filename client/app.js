@@ -36,11 +36,15 @@ angular.module('ripeT', ['ngMap'])
     User.addFavorite($scope.username, token, State.location, address, name);
   };
 
+  $scope.hideMe = function (restaurant) {
+    restaurant.hide=true;
+  };
+
   $scope.remove = function (address, name) {
     var token = $window.localStorage.getItem('com.ripeT');
     User.removeItem($scope.username, token, address, name).then(function() {
       console.log('yolo');
-      $window.location.reload();
+      //$window.location.reload();
     });
   };
 

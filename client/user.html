@@ -62,7 +62,7 @@
 <!-- RESULTS CONTAINER (wraps all search result items)  -->
   <div id="results_container" class="container col-sm-12 col-md-8" style='position: static;'>
   <!-- RESULT ITEM CONTAINER -->
-    <div id="search_result_item" class="well" ng-repeat="restaurant in favorites" ng-init="initializeMap(favorites)">
+    <div id="search_result_item" class="well" ng-repeat="restaurant in favorites" ng-init="initializeMap(favorites)" ng-hide='restaurant.hide'>
       <!-- Using yelp image image_url  -->
       <img style="float: right" src="{{ restaurant.imageUrl }}" alt="">
       <div class='restaurant-header'>
@@ -112,7 +112,7 @@
         </div> <!-- end add_to_favorites -->
       <!-- Remove to favorites -->
         <div id="add_to_favorites" class="user-action" ng-show="checkIfHome()" >
-          <span class="glyphicon glyphicon-star-empty"></span><a ng-click="remove(restaurant.address[0], restaurant.name)"> Remove from Favorites </a>
+          <span class="glyphicon glyphicon-star-empty"></span><a ng-click="remove(restaurant.address[0], restaurant.name); hideMe(restaurant)"> Remove from Favorites </a>
         </div> <!-- end remove_to_favorites -->
       </div> <!-- end user_actions div -->
     </div> <!-- end search_result_item -->
