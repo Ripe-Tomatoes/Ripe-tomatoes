@@ -36,6 +36,14 @@ angular.module('ripeT', ['ngMap'])
     User.addFavorite($scope.username, token, State.location, address, name);
   };
 
+  $scope.makeFave = function (restaurant) {
+    if (restaurant.isfave){
+      restaurant.isfave= !restaurant.isfave;
+    } else {
+      restaurant.isfave= true;
+    }
+  }
+
   $scope.hideMe = function (restaurant) {
     restaurant.hide=true;
   };
