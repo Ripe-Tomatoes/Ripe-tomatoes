@@ -48,6 +48,7 @@ angular.module('ripeT', ['ngMap'])
     var token   = $window.localStorage.getItem('com.ripeT'),
         results = [],
         loggedIn;
+    console.log($location);
 
     User.retrieveFavorites($location.$$path.slice(6), token).then(function (resp) {
       State.loggedIn = resp.data.loggedIn;
@@ -164,7 +165,7 @@ angular.module('ripeT', ['ngMap'])
     $scope.results = Search.results;
   };
 
-  $scope.initializeMap = function () {
+  $scope.initializeMap = function (restaurants) {
     var map = new google.maps.Map(document.getElementById('map'), {
          center: {lat: 37.787767, lng: -122.400076},
          zoom: 1
@@ -190,8 +191,8 @@ angular.module('ripeT', ['ngMap'])
      $scope.markers.push(marker);
     };
 
-    for (var i = 0; i < $scope.results.length; i++){
-     createMarker($scope.results[i], bounds);
+    for (var i = 0; i < restaurants.length; i++){
+     createMarker(restaurants[i], bounds);
     }
     $scope.map.setCenter(bounds.getCenter());
     $scope.map.fitBounds(bounds);
