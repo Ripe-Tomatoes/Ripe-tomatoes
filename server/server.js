@@ -15,6 +15,7 @@ var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000
                 replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } } };
 
 var mongoURI = process.env.MONGOLAB_URI || "mongodb://localhost:27017";
+console.log(mongoURI); //for debugging deployment of db in Heroku
 var mongooseUri = uriUtil.formatMongoose(mongoURI);
 var MongoDB = mongoose.connect(mongooseUri, options).connection;
 MongoDB.on('error', console.error.bind(console, 'connection error: database'));
