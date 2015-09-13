@@ -59,7 +59,7 @@
 <!-- RESULTS CONTAINER (wraps all search result items)  -->
   <div id="results_container" class="container col-sm-12 col-md-8" style='position: static;'>
   <!-- RESULT ITEM CONTAINER -->
-    <div id="search_result_item" class="well" ng-repeat="restaurant in results" ng-init="initializeMap(results)">
+    <div id="search_result_item" class="well" ng-repeat="restaurant in results" ng-init="initializeMap(results)" ng-class='{"aFavorite": restaurant.isfave}'>
       <!-- Using yelp image image_url  -->
       <img style="float: right" src="{{ restaurant.imageUrl }}" alt="">
       <div class='restaurant-header'>
