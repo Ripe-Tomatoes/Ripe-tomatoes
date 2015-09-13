@@ -27,7 +27,10 @@
       <ul class="nav navbar-nav navbar-right">
         <li ng-hide="loggedIn"><a href="#/signin">Sign In</a></li>
         <li ng-hide="loggedIn"><a href="#/signup">Sign Up</a></li>
+        <li ng-show="loggedIn"><span class="navbar-text">Welcome, <a href="#/user/{{username}}">{{ username }}</a>!</span></li>
+        <li ng-show="loggedIn"><a href="#/user/{{username}}" >Favorites <span class="badge">{{ favorites.length }}</span></a></li>
         <li ng-show="loggedIn"><a ng-click="signout()">Sign Out</a></li>
+
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
           <ul class="dropdown-menu">
