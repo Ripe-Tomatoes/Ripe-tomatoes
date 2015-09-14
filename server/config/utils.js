@@ -18,8 +18,8 @@ module.exports.yelpSearch = function (searchTerm, callback){
 module.exports.foursquareSearch = function (searchTerm, callback) {
   //this is the query string to be passed into foursquare's server
   var queryString = 
-    'https://api.foursquare.com/v2/venues/explore?client_id=' 
-    + apiKeys.foursquareKeys().client_ID + 
+    'https://api.foursquare.com/v2/venues/explore?' +
+    'client_id=' + apiKeys.foursquareKeys().client_ID + 
     '&client_secret=' + apiKeys.foursquareKeys().client_secret + 
     '&v=20130815&' +
     'near=' + searchTerm.location +
@@ -28,7 +28,7 @@ module.exports.foursquareSearch = function (searchTerm, callback) {
     if (error) {
       throw error;
     }
-    parsedBody = JSON.parse(body);
+    var parsedBody = JSON.parse(body);
     console.log(parsedBody);
     if (parsedBody.meta.code === 400) {
       if (parsedBody.meta.errorType === 'failed_geocode') {
@@ -37,7 +37,7 @@ module.exports.foursquareSearch = function (searchTerm, callback) {
                   error_code: 50})
       }
     } else if (parsedBody.meta.code === 500) {
-      console.log('foursquare server');
+      console.log('foursquare server error');
     } else {
       bodyDir = parsedBody.response.groups[0]
       callback(bodyDir);
@@ -45,6 +45,58 @@ module.exports.foursquareSearch = function (searchTerm, callback) {
 
 
   })
+}
+
+var findCoord = function (location, callback) {
+  var queryString = 
+    'https://maps.googleapis.com/maps/api/geocode/json?' + 
+    'address=' + location +
+    '&key='+ apiKeys.googleKeys().mapKey;
+  request(queryString, function (error, response, body) {
+    if (error) {
+      throw error;
+    }
+    var parsedBody = JSON.parse(body);
+    // console.log(parsedBody);
+    callback(parsedBody);
+  })
+}
+
+module.exports.googleSearch = function (searchTerm, callback) {
+  findCoord(searchTerm.location, function(res) {
+    if (res.status === 'ZERO_RESULTS') {
+      console.log('no geography that matches user inquiry found');
+      callback({error: 'no geography that matches user inquiry found',
+                error_code: 50})
+    } else {
+      var location = res.results[0].geometry.location;
+      var radius = Math.min((res.results[0].geometry.viewport.northeast.lat -
+        res.results[0].geometry.viewport.southwest.lat) * 110000, 50000);
+      console.log(radius);
+      var queryString = 
+        'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' +
+        'key=' + apiKeys.googleKeys().mapKey +
+        '&location=' + location.lat + ',' + location.lng +
+        '&keyword=' + searchTerm.term +
+        '&radius=' + radius;
+      request(queryString, function (error, response, body) {
+        var parsedBody = JSON.parse(body);
+        // console.log(parsedBody.results);
+      })
+    }
+   
+  })
+
+  // var queryString = '';
+  // request(queryString, function (error, response, body) {
+  //   if (error) {
+  //     throw error;
+  //   }
+  //   var parsedBody = JSON.parse(body);
+  //   console.log(parsedBody);
+  //   //insert forloop for each restaurant int he response.
+  //   //do second API query to get result details
+  // })
 }
 
 module.exports.matchRestaurants = function (yelpArray, foursquareArray) {
