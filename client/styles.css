@@ -63,6 +63,11 @@ h3 {
   padding: 10px;
 }
 
+.aFavorite {
+  border-color: green;
+  border-width: thick;
+}
+
 #user_actions {
   margin-top: 20px;
 }
