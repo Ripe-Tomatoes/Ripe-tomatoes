@@ -28,7 +28,7 @@ angular.module('ripeT', ['ngMap'])
     });
 })
 
-.controller('MainController', function ($scope, $location, Search, State, Auth, User, $window) {
+.controller('MainController', function ($scope, $location, Search, State, Auth, User, $window, Reviews) {
 
   $scope.add = function (address, name) {
     var token = $window.localStorage.getItem('com.ripeT');
@@ -58,8 +58,6 @@ angular.module('ripeT', ['ngMap'])
   $scope.remove = function (address, name) {
     var token = $window.localStorage.getItem('com.ripeT');
     User.removeItem($scope.username, token, address, name).then(function() {
-      //console.log('yolo');
-      //$window.location.reload();
     });
   };
 
@@ -173,6 +171,26 @@ angular.module('ripeT', ['ngMap'])
     return arr;
   };
 
+  $scope.getReviews = function (data) {
+    var results = [];
+    data.forEach(function (item) {
+      results.push([item.name, item.address[0]]);
+    }); 
+    return Reviews.get(results).then(function (resp) {
+      return resp;
+    });
+  };
+
+  $scope.addComment = function (comment, name, address) {
+    Reviews.add(comment, State.username, name, address).then(function (resp) {
+      $scope.getReviews($scope.results).then(function (res) {
+          $scope.results.forEach(function (item, index) {
+            item['reviews'] = res[index];
+          });
+        });
+    });
+  };
+
   $scope.loadResults = function () {
     console.log("loading results");
     State.location = $scope.location;
@@ -184,7 +202,16 @@ angular.module('ripeT', ['ngMap'])
         $location.path('results');
       } else {
         Search.results = $scope.results = resp.results;
+
         $scope.error = '';
+
+        $scope.getReviews(resp.results).then(function (res) {
+          console.log(JSON.stringify(res));
+          resp.results.forEach(function (item, index) {
+            item['reviews'] = res[index];
+          });
+        });
+
         $location.path('results');
       }
     });
@@ -397,6 +424,56 @@ angular.module('ripeT', ['ngMap'])
     checkUser: checkUser
   };
 })
+
+.factory('Reviews', function ($http) {
+  var get = function (restaurants) {
+    return $http({
+      method: 'POST',
+      url: '/reviews',
+      data: {
+        restaurants: restaurants
+      }
+    }).then(function (resp) {
+      return resp.data.results;
+    });
+  };
+
+  var add = function (comment, user, name, address) {
+    return $http({
+      method: 'POST',
+      url: '/review',
+      data: {
+        comment: comment,
+        user: user,
+        name: name,
+        address
+      }
+    }).then(function (resp) {
+      return resp.data;
+    });
+  };
+
+  return {
+    add: add,
+    get: get
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 //name, address, ratings, GEO,
 

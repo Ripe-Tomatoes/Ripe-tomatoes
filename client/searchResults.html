@@ -47,7 +47,7 @@
 </nav> <!-- end Navbar -->
 
 <!-- MAIN CONTAINER FOR CONTENT (search results and map) -->
-<div id="searchResults_content" style="padding: 60px"> <!-- padding applied to clear fixed navbar -->
+<div id="searchResults_content" style="padding: 60px" > <!-- padding applied to clear fixed navbar -->
 
   <!-- SEARCH RESULTS MAP -->
   <div id="map_search_results" style="float: right; position: fixed; right: 0px; margin-bottom: 20px;"  class="col-sm-12 col-md-4">
@@ -60,7 +60,7 @@
 <!-- RESULTS CONTAINER (wraps all search result items)  -->
   <div id="results_container" class="container col-sm-12 col-md-8" style='position: static;'>
   <!-- RESULT ITEM CONTAINER -->
-    <div id="search_result_item" class="well" ng-repeat="restaurant in results" ng-init="initializeMap(results)" ng-class='{"aFavorite": restaurant.isfave}'>
+    <div id="search_result_item" class="well" ng-repeat="restaurant in results" ng-init="initializeMap(results);" ng-class='{"aFavorite": restaurant.isfave}'>
       <!-- Using yelp image image_url  -->
       <img style="float: right" src="{{ restaurant.imageUrl }}" alt="">
       <div class='restaurant-header'>
@@ -103,10 +103,10 @@
     </div> <!-- end rating meters -->
 
     <!-- USER ACTIONS -->
-      <div id="user_actions">
+      <div id="user_actions" ng-init="restaurant.comments=false">
       <!-- View comments -->
         <div id="view_comments" class="user-action">
-          <span class="glyphicon glyphicon-comment"></span><a href="#">  View Comments (potential feature)</a>
+          <span class="glyphicon glyphicon-comment"></span><a ng-click="restaurant.comments=!restaurant.comments"> View Comments </a>
         </div> <!-- end add_to_favorites -->
       <!-- Add to favorites -->
         <div id="add_to_favorites" class="user-action" ng-show="loggedIn">
@@ -117,6 +117,15 @@
 
           <a ng-click="add(restaurant.address[0], restaurant.name); makeFave(restaurant)"> Add to Favorites </a> <!--note to future us: it would be cleaner to only have one span that deppending on the isfave estatus set one glyphicon class or the othe -->
         </div> <!-- end add_to_favorites -->
+        <div id="comments" ng-show="restaurant.comments">
+          <div ng-repeat="review in restaurant.reviews">
+            <p> {{ review[0] }} </p><strong> {{ review[1] }} </strong>
+          </div>
+          <div>
+            <span><input type="text" placeholder="add comment here" ng-model="restaurant.comment"></span>
+            <span><button ng-click="addComment(restaurant.comment, restaurant.name, restaurant.address); restaurant.comment=''">publish comment</button></span>
+          <div>
+        </div>
       </div> <!-- end user_actions div -->
     </div> <!-- end search_result_item -->
   </div> <!-- end results_container -->
