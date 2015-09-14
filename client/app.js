@@ -161,10 +161,13 @@ angular.module('ripeT', ['ngMap'])
     State.location = $scope.location;
     Search.getResults($scope.location, $scope.name).then(function (resp) {
       if (resp['error']) {
-        Search.results = $scope.results = resp;
+        Search.results = $scope.results = [];
+        console.log(resp['error']);
+        $scope.error=resp['error'];
         $location.path('results');
       } else {
         Search.results = $scope.results = resp.results;
+        $scope.error = '';
         $location.path('results');
       }
     });
@@ -187,7 +190,6 @@ angular.module('ripeT', ['ngMap'])
     $scope.map = map;
     $scope.markers = [];
     var createMarker = function ( place, bounds ){
-     console.log(place)
      var geometry = new google.maps.LatLng( place.location.latitute, place.location.longitude);
      bounds.extend(geometry);
      var marker = new google.maps.Marker({

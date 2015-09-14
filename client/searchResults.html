@@ -29,7 +29,7 @@
         <li ng-hide="loggedIn"><a href="#/signup">Sign Up</a></li>
         <li ng-show="loggedIn"><span class="navbar-text">Welcome, <a href="#/user/{{username}}">{{ username }}</a>!</span></li>
         <!-- TODO: get bage to display current number of user favorites -->
-        <li ng-show="loggedIn"><a href="#/user/{{username}}" >Favorites <span class="badge">42</span></a></li>
+        <li ng-show="loggedIn"><a href="#/user/{{username}}" >Favorites</a></li>
         <li ng-show="loggedIn"><a ng-click="signout()">Sign Out</a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -56,6 +56,7 @@
     </div>
   </div> <!-- end search results map -->
 
+<div ng-show="error">{{error}}</div>
 <!-- RESULTS CONTAINER (wraps all search result items)  -->
   <div id="results_container" class="container col-sm-12 col-md-8" style='position: static;'>
   <!-- RESULT ITEM CONTAINER -->
