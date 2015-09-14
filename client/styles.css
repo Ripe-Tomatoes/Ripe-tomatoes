@@ -93,7 +93,6 @@ h3 {
 }
 
 #signin, #signup {
-  margin-top: 200px;
   text-align: center;
 }
 
@@ -104,4 +103,8 @@ h3 {
 
 #favoritesHeader {
   margin-top: 100px;
+}
+
+.controls {
+  max-height: 100px;
 }
