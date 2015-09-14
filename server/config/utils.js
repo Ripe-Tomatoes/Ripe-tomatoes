@@ -191,7 +191,7 @@ var Restaurant = function (name, address, url, lat, long, yelpData, foursquareDa
   // }
 
   this.foursquareData = foursquareData;
-  this.foursquareData.rating = this.foursquareData.rating || 0;
+  this.foursquareData.rating = (this.foursquareData.rating / 2) || 0;
   this.foursquareData.reviewCount = this.foursquareData.reviewCount || 0;
   // {
   //   rating: 9.8,
@@ -201,10 +201,14 @@ var Restaurant = function (name, address, url, lat, long, yelpData, foursquareDa
 
   this.totalReviews = this.yelpData.reviewCount + this.foursquareData.reviewCount;
 
-  this.compositeScore = (( this.yelpData.rating * 2 * this.yelpData.reviewCount +
-                    this.foursquareData.rating * this.foursquareData.reviewCount ) / 
-                    ( this.totalReviews )).toFixed(1);
+  // this.compositeScore = (( this.yelpData.rating * 2 * this.yelpData.reviewCount +
+  //                   this.foursquareData.rating * this.foursquareData.reviewCount ) / 
+  //                   ( this.totalReviews )).toFixed(1);
   
+  this.compositeScore = ((( this.yelpData.rating * this.yelpData.reviewCount) +
+                    ((this.foursquareData.rating) * this.foursquareData.reviewCount )) / 
+                    ( this.totalReviews )).toFixed(1);
+
   this.phoneNumber = phoneNumber;
   this.imageUrl = imageUrl;
 }
