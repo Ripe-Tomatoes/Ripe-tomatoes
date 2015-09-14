@@ -105,10 +105,11 @@ module.exports = function (app, express){
       //Errors reset is necessary to ensure that TODO FINISH THIS
       resetErrors();
     };
-
+    apiSearch('google');
     apiSearch('yelp');
 
     apiSearch('foursquare');
+
   });
 
   // app.post('/signin', );
