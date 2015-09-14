@@ -164,7 +164,7 @@ angular.module('ripeT', ['ngMap'])
     else if (fraction >= .75){
       arr.push( ratingImages[typeOfRating].whole );
     }
-    for(var i = arr.length; i < 10; i++){
+    for(var i = arr.length; i < 5; i++){
       arr.push( ratingImages[typeOfRating].whole_gray );
     }
 
