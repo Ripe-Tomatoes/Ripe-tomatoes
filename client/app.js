@@ -26,7 +26,6 @@ angular.module('ripeT', ['ngMap'])
     .otherwise({
       redirectTo: '/'
     });
-
 })
 
 .controller('MainController', function ($scope, $location, Search, State, Auth, User, $window) {
@@ -34,6 +33,13 @@ angular.module('ripeT', ['ngMap'])
   $scope.add = function (address, name) {
     var token = $window.localStorage.getItem('com.ripeT');
     User.addFavorite($scope.username, token, State.location, address, name);
+    //console.log('add was run with', 'username:', $scope.username, 'stateloc', State.location,'add:', address, 'name:',name);
+  };
+
+  $scope.steal = function (location, address, name) {
+    var token = $window.localStorage.getItem('com.ripeT');
+    User.addFavorite($scope.username, token, location, address, name);
+    //console.log('add was run with', 'username:', $scope.username, 'stateloc', State.location,'add:', address, 'name:',name);
   };
 
   $scope.makeFave = function (restaurant) {
@@ -41,6 +47,7 @@ angular.module('ripeT', ['ngMap'])
       restaurant.isfave= !restaurant.isfave;
     } else {
       restaurant.isfave= true;
+    //console.log('makeFave was run')
     }
   }
 
@@ -51,7 +58,7 @@ angular.module('ripeT', ['ngMap'])
   $scope.remove = function (address, name) {
     var token = $window.localStorage.getItem('com.ripeT');
     User.removeItem($scope.username, token, address, name).then(function() {
-      console.log('yolo');
+      //console.log('yolo');
       //$window.location.reload();
     });
   };
@@ -60,7 +67,7 @@ angular.module('ripeT', ['ngMap'])
     var token   = $window.localStorage.getItem('com.ripeT'),
         results = [],
         loggedIn;
-    console.log($location);
+    //console.log($location);
 
     User.retrieveFavorites($location.$$path.slice(6), token).then(function (resp) {
       State.loggedIn = resp.data.loggedIn;
@@ -82,6 +89,7 @@ angular.module('ripeT', ['ngMap'])
   };
 
   $scope.checkIfHome = function () {
+    console.log('checkifhome:', $scope.pagename === $scope.username);
     return $scope.pagename === $scope.username;
   };
 
@@ -93,6 +101,15 @@ angular.module('ripeT', ['ngMap'])
     if ($location.$$path.slice(0, 6) === '/user/') {
       $scope.pagename = $location.$$path.slice(6);
     }
+  };
+
+  $scope.isVisitor = function () {
+    var hide =true;
+    if ($scope.username && $scope.username !== $scope.pagename) {
+    //console.log($scope.username !== $scope.pagename);
+      hide = false;
+    }
+    return hide;
   };
 
   $scope.checkUser = function () {
@@ -322,6 +339,7 @@ angular.module('ripeT', ['ngMap'])
 
 .factory('User', function ($http) {
   var addFavorite = function (username, token, location, address, name) {
+    console.log('favoritePost', username)
     return $http({
       method: 'POST',
       url: '/user/' + username,
