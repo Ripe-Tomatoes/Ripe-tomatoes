@@ -74,30 +74,32 @@ module.exports = function (app, express){
           errorCode = result.error_code;
         }
 
-        //If there was an error in the request, send error message to client in the form of an object:
-        // { error: 'errorMessage as a string',
-        //   errorCode: integer}
-        if (!noErrors) {
-          console.log('4sq ERROR!!!')
-          res.send({
-            error: errorMessage,
-            errorCode: errorCode
-          });
 
         //Otherwise, if all API fetches are complete, run the utils.matchRestaurants function to match up all the results
         //across all of the API fetches. Any additional APIs would need to be added into the matchRestaurants function
-        } else if (allFetchesFinished()) {
-          var results = utils.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
-          
-          //If no matches between the arrays are found, or the arrays are empty, return errorCode 20: No restaurants found
-          if (results.length === 0) {
+        if (allFetchesFinished()) {
+          //If there was an error in the request, send error message to client in the form of an object:
+          // { error: 'errorMessage as a string',
+          //   errorCode: integer}
+          if (!noErrors) {
+            console.log('error', API, JSON.stringify(result) );
             res.send({
-              error: 'No restaurants found',
-              errorCode: 20
+              error: errorMessage,
+              errorCode: errorCode
             });
           } else {
-            res.send({results: results});
+            var results = utils.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
+            //If no matches between the arrays are found, or the arrays are empty, return errorCode 20: No restaurants found
+            if (results.length === 0) {
+              res.send({
+                error: 'No restaurants found',
+                errorCode: 20
+              });
+            } else {
+              res.send({results: results});
+            }
           }
+          
         }
       });
       //Errors reset is necessary to ensure that TODO FINISH THIS

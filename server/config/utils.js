@@ -6,7 +6,12 @@ var yelp = require("yelp").createClient(apiKeys.yelpKeys());
 
 module.exports.yelpSearch = function (searchTerm, callback){
   var results = yelp.search(searchTerm, function(err, data){
-    callback(data);
+    if(err){
+      callback({error: JSON.parse(err.data),
+                error_code: 50});
+    }else{
+      callback(data);
+    }
   });
 };
 
