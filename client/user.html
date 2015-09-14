@@ -62,7 +62,7 @@
 <!-- RESULTS CONTAINER (wraps all search result items)  -->
   <div id="results_container" class="container col-sm-12 col-md-8" style='position: static;'>
   <!-- RESULT ITEM CONTAINER -->
-    <div id="search_result_item" class="well" ng-repeat="restaurant in favorites" ng-init="initializeMap(favorites)" ng-hide='restaurant.hide'>
+    <div id="search_result_item" class="well" ng-repeat="restaurant in favorites" ng-init="initializeMap(favorites)" ng-hide='restaurant.hide' ng-class='{"aFavorite": restaurant.isfave}'>
       <!-- Using yelp image image_url  -->
       <img style="float: right" src="{{ restaurant.imageUrl }}" alt="">
       <div class='restaurant-header'>
@@ -111,7 +111,15 @@
           <span class="glyphicon glyphicon-comment"></span><a href="#">  View Comments (potential feature)</a>
         </div> <!-- end add_to_favorites -->
       <!-- Remove to favorites -->
-        <div id="add_to_favorites" class="user-action" ng-show="checkIfHome()" >
+        <div id="add_to_favorites" class="user-action" ng-init="isVisitor()" ng-hide="isVisitor()" >
+          <!-- Empty star glyohicon for results not yet in favorites-->
+          <span class="glyphicon glyphicon-star-empty" ng-show='!restaurant.isfave'></span>
+          <!-- Full star glyohicon for results already added to favorites-->
+          <span class="glyphicon glyphicon-star" ng-show='restaurant.isfave'></span>
+
+          <a ng-click="steal(restaurant.address[2], restaurant.address[0], restaurant.name); makeFave(restaurant)"> Copy Favorite </a> <!--note to future us: it would be cleaner to only have one span that selects  the gplyphicon to show deppending on the isfave estatus -->
+        </div> <!-- end add_to_favorites -->
+        <div id="remove_from_favorites" class="user-action" ng-show="checkIfHome()" >
           <span class="glyphicon glyphicon-star-empty"></span><a ng-click="remove(restaurant.address[0], restaurant.name); hideMe(restaurant)"> Remove from Favorites </a>
         </div> <!-- end remove_to_favorites -->
       </div> <!-- end user_actions div -->

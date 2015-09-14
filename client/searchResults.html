@@ -110,7 +110,12 @@
         </div> <!-- end add_to_favorites -->
       <!-- Add to favorites -->
         <div id="add_to_favorites" class="user-action" ng-show="loggedIn">
-          <span class="glyphicon glyphicon-star-empty" ng-show='!restaurant.isfave'></span><span class="glyphicon glyphicon-star" ng-show='restaurant.isfave'></span><a ng-click="add(restaurant.address[0], restaurant.name); makeFave(restaurant)"> Add to Favorites </a>
+          <!-- Empty star glyohicon for results not yet in favorites-->
+          <span class="glyphicon glyphicon-star-empty" ng-show='!restaurant.isfave'></span>
+          <!-- Full star glyohicon for results already added to favorites-->
+          <span class="glyphicon glyphicon-star" ng-show='restaurant.isfave'></span>
+
+          <a ng-click="add(restaurant.address[0], restaurant.name); makeFave(restaurant)"> Add to Favorites </a> <!--note to future us: it would be cleaner to only have one span that deppending on the isfave estatus set one glyphicon class or the othe -->
         </div> <!-- end add_to_favorites -->
       </div> <!-- end user_actions div -->
     </div> <!-- end search_result_item -->
