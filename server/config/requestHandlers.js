@@ -1,7 +1,8 @@
 //Handles requests from clients
 var parser  = require('body-parser'),
     utils   = require('./utils.js'),
-    userController = require('../users/userController.js');
+    userController = require('../users/userController.js'),
+    restaurantController = require('../restaurants/restaurantController.js');
 
 //Server request handler
 //Exported to: server.js
@@ -128,5 +129,8 @@ module.exports = function (app, express){
   });
 
   app.post('/check', userController.checkUser);
+
+  app.post('/reviews', restaurantController.retrieveReviews);
+  app.post('/review', restaurantController.addReview);
 };
 
