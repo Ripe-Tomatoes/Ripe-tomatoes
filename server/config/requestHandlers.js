@@ -78,6 +78,7 @@ module.exports = function (app, express){
         // { error: 'errorMessage as a string',
         //   errorCode: integer}
         if (!noErrors) {
+          console.log('4sq ERROR!!!')
           res.send({
             error: errorMessage,
             errorCode: errorCode
@@ -99,13 +100,12 @@ module.exports = function (app, express){
           }
         }
       });
+      //Errors reset is necessary to ensure that TODO FINISH THIS
+      resetErrors();
     };
 
     apiSearch('yelp');
 
-    //Errors reset is necessary to ensure that TODO FINISH THIS
-    //check if this is better placed at the end of apiSearch()
-    resetErrors();
     apiSearch('foursquare');
   });
 
