@@ -106,7 +106,7 @@ module.exports = function (app, express){
       resetErrors();
     };
     apiSearch('google');
-    // apiSearch('yelp');
+    apiSearch('yelp');
 
     apiSearch('foursquare');
 
