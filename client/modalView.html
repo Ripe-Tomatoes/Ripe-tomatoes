@@ -1,25 +1,5 @@
-<div ng-hide="loggedIn">
-  <a href="#/signin">Sign In</a>
-</div>
-<div ng-hide="loggedIn">
-  <a href="#/signup">Sign Up</a>
-</div>
-<div ng-show="loggedIn">
-  <a href="#/results">Back</a>
-</div>
-<div class="main" ng-init="checkUser()">
-  <img id="mainImage" src="tomato.png">
-  <h1>Ripe Tomatoes</h1>
-  <h2>Look in more than one basket.</h2>
-  <form name="searchBar" ng-submit="loadResults()" >
-      <input type="text" name="name" placeholder="Enter restaurant name" ng-model="name" autofocus>
-      <input type="text" name="location" placeholder="Enter location" ng-model="location">
-      <button type="submit" class="search" ng-click="saveLocation()">Submit</button>
-  </form >
-  <button ng-hide="loggedIn" class="btn btn-primary btn-lg" href="#signup" data-toggle="modal" data-target=".bs-modal-sm">Sign In/Register</button>
-
 <!-- MODAL -->
-<div id="loginModal" class="modal fade bs-modal-sm" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true"ng-controller="AuthController">
+<div class="modal fade bs-modal-sm" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" ng-controller="modalCtrl as ctrl">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
         <br>
@@ -31,7 +11,7 @@
         </div>
 
       <!-- MODAL BODY -->
-      <div class="modal-body" style="max-height: 25%">
+      <div class="modal-body">
         <div id="modalTabContent" class="tab-content">
           
           <!-- Signin tab -->
@@ -41,21 +21,21 @@
             <div class="control-group">
               <label class="control-label" for="userid">Username:</label>
               <div class="controls">
-                <input id="username" name="username" type="text" class="form-control input-medium" placeholder="Enter username" required="" ng-model="user.username">
+                <input id="username" name="username" type="text" class="form-control input-medium" placeholder="Enter username" required="" ng-model="ctrl.existingUser.username">
               </div>
             </div>
         
             <div class="control-group">
               <label class="control-label" for="passwordinput">Password:</label>
               <div class="controls">
-                <input required="" id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium" ng-model="user.password">
+                <input required="" id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium" ng-model="ctrl.existingUser.password">
               </div>
             </div>
         
             <div class="control-group">
               <label class="control-label" for="signin"></label>
               <div class="controls"><center>
-                <button id="signin" name="signin" class="btn btn-success" ng-click="signin()">Sign In</button></center>
+                <button id="signin" name="signin" class="btn btn-success" ng-click="ctrl.login()">Sign In</button></center>
               </div>
             </div>
             </fieldset>
@@ -70,28 +50,28 @@
             <div class="control-group">
               <label class="control-label" for="userid">Username:</label>
               <div class="controls">
-                <input id="userid" name="username" class="form-control" type="text" placeholder="Enter desired username" class="input-large" required="" ng-model="user.username">
+                <input id="userid" name="username" class="form-control" type="text" placeholder="Enter desired username" class="input-large" required="" ng-model="ctrl.newUser.username">
               </div>
             </div>
             
             <div class="control-group">
               <label class="control-label" for="password">Password:</label>
               <div class="controls">
-                <input id="password" name="password" class="form-control input-large" type="password" placeholder="********" required="" ng-model="user.password">
+                <input id="password" name="password" class="form-control input-large" type="password" placeholder="********" required="" ng-model="ctrl.newUser.password">
               </div>
             </div>
             
             <div class="control-group">
               <label class="control-label" for="reenterpassword">Re-Enter Password:</label>
               <div class="controls">
-                <input id="reenterpassword" class="form-control" name="reenterpassword" type="password" placeholder="********" class="input-large" required="" ng-model="user.password">
+                <input id="reenterpassword" class="form-control" name="reenterpassword" type="password" placeholder="********" class="input-large" required="" ng-model="ctrl.newUser.repeatPassword">
               </div>
             </div>
             
             <div class="control-group">
               <label class="control-label" for="confirmsignup"></label>
               <div><center>
-                <button id="confirmsignup" name="confirmsignup" class="btn btn-success" ng-click="$('#loginModal').removeClass('fade');$('#loginModal').modal('hide'); signup()" data-dismiss="modal" data-target="#loginModal">Sign Up</button></center>
+                <button id="confirmsignup" name="confirmsignup" class="btn btn-success" ng-click="ctrl.join()">Sign Up</button></center>
               </div>
             </div>
             </fieldset>
@@ -109,4 +89,3 @@
     </div> <!-- end modal-content -->
   </div> <!-- end modal-dialog -->
 </div> <!-- end modal -->
-</div>

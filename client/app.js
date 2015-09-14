@@ -257,7 +257,6 @@ angular.module('ripeT', ['ngMap'])
   };
 
 })
-
 .factory('Search', function ($http) {
   var getResults = function (loc, rest) {
     return $http({
@@ -280,7 +279,6 @@ angular.module('ripeT', ['ngMap'])
     results: results
   }
 })
-
 .controller('AuthController', function (Auth, $window, State, $scope, $location) {
   $scope.loggedIn = State.loggedIn;
   $scope.user = {};
@@ -290,6 +288,8 @@ angular.module('ripeT', ['ngMap'])
   $scope.signin = function () {
     Auth.signin($scope.user)
       .then(function (token) {
+            console.log("logging in", $scope.user);
+
         if (token !== 'null') {
           State.username = $scope.user.username;
           $window.localStorage.setItem('com.ripeT', token);
@@ -298,9 +298,13 @@ angular.module('ripeT', ['ngMap'])
         } else {
           $scope.note = 'incorrect username or password';
         }
+
+        document.getElementByClassName("modal").remove();
       });
   };
   $scope.signup = function () {
+        console.log("SIGNING up", $scope.user);
+
     Auth.signup($scope.user)
       .then(function (token) {
         if (token !== 'null') {
