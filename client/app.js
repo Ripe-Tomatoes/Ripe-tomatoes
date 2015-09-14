@@ -305,7 +305,11 @@ angular.module('ripeT', ['ngMap'])
       });
   };
   $scope.signup = function () {
+<<<<<<< HEAD
     angular.element(document.querySelector('.modal-backdrop')).remove();
+=======
+        console.log("SIGNING up", $scope.user);
+>>>>>>> f8ad3859112b949e32c42c85e9af962ac19aa4a3
 
     Auth.signup($scope.user)
       .then(function (token) {
