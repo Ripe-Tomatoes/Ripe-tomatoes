@@ -232,12 +232,14 @@ angular.module('ripeT', ['ngMap'])
     $scope.note = '';
   };
   $scope.signin = function () {
+    // console.log(angular.element(document.querySelector('.modal-backdrop')));
+    angular.element(document.querySelector('.modal-backdrop')).remove();
     Auth.signin($scope.user)
       .then(function (token) {
         if (token !== 'null') {
           State.username = $scope.user.username;
           $window.localStorage.setItem('com.ripeT', token);
-          $location.path('/results');
+          $location.path('/user/'+State.username);
           State.loggedIn = true;
         } else {
           $scope.note = 'incorrect username or password';
@@ -245,12 +247,13 @@ angular.module('ripeT', ['ngMap'])
       });
   };
   $scope.signup = function () {
+    angular.element(document.querySelector('.modal-backdrop')).remove();
     Auth.signup($scope.user)
       .then(function (token) {
         if (token !== 'null') {
           State.username = $scope.user.username;
           $window.localStorage.setItem('com.ripeT', token);
-          $location.path('/results');
+          $location.path('/user/'+State.username);
           State.loggedIn = true;
         } else {
           $scope.note = 'username already taken';
