@@ -306,6 +306,7 @@ angular.module('ripeT', ['ngMap'])
   };
   $scope.signup = function () {
     angular.element(document.querySelector('.modal-backdrop')).remove();
+
     Auth.signup($scope.user)
       .then(function (token) {
         if (token !== 'null') {
