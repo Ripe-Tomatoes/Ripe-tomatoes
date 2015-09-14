@@ -10,6 +10,7 @@
       </button>
       <div>
         <a class="navbar-brand" href="#"><img style="width: 25 px; height:25px" src="tomato_map.png"></a>
+        <!-- <a class="navbar-brand" href="#"><img style="width: 25 px; height:25px" "rt-logo.png"></a> -->
       </div>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -82,7 +83,7 @@
         <!-- TODO: fix tomato meter...I created a function calculateTomatoRating in the controller for us to build in our own logic for computing the composite score  -->
         <span ng-repeat="i in getNumber(restaurant.compositeScore, 'ripe_tomatoes')">
           <img width="15px" height="15px" src="{{ i }}" alt="">
-        </span> ({{ restaurant.compositeScore }} out of 10 based on {{ restaurant.totalReviews }} reviews)
+        </span> ({{ restaurant.compositeScore }} out of 5 based on {{ restaurant.totalReviews }} reviews)
       </div>
 
     <!-- Yelp meter -->
@@ -98,7 +99,7 @@
           <img  width="15px" height="15px" src="{{ i }}" alt="" >
         </div>
 
-        <span class="count"> ({{ restaurant.foursquareData.rating }} out of 10 based on {{ restaurant.foursquareData.reviewCount }} reviews)</span>
+        <span class="count"> ({{ restaurant.foursquareData.rating }} out of 5 based on {{ restaurant.foursquareData.reviewCount }} reviews)</span>
       </div>
     </div> <!-- end rating meters -->
 
