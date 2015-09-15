@@ -29,7 +29,7 @@ module.exports.foursquareSearch = function (searchTerm, callback) {
       throw error;
     }
     var parsedBody = JSON.parse(body);
-    console.log(parsedBody);
+    // console.log(parsedBody);
     if (parsedBody.meta.code === 400) {
       if (parsedBody.meta.errorType === 'failed_geocode') {
         console.log('no geography that matches user inquiry found');
@@ -77,10 +77,24 @@ module.exports.googleSearch = function (searchTerm, callback) {
         'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' +
         'key=' + apiKeys.googleKeys().mapKey +
         '&location=' + location.lat + ',' + location.lng +
-        '&keyword=' + searchTerm.term +
+        '&name=' + searchTerm.term +
         '&radius=' + radius;
+        console.log(queryString);
       request(queryString, function (error, response, body) {
         var parsedBody = JSON.parse(body);
+        var results = parsedBody.results;
+        if (parsedBody.next_page_token) {
+          request(queryString + '&pagetoken=' + parsedBody.next_page_token, function (error, response, body) {
+            var parsedBody = JSON.parse(body);
+            for (var i = 0; i < parsedBody.results.length; i++) {
+              results.push(parsedBody.results[i]);
+            }
+            console.log(results);
+            callback(results);
+          })
+        } else {
+          callback(results);
+        }
         // console.log(parsedBody.results);
       })
     }
@@ -99,7 +113,7 @@ module.exports.googleSearch = function (searchTerm, callback) {
   // })
 }
 
-module.exports.matchRestaurants = function (yelpArray, foursquareArray) {
+module.exports.matchRestaurants = function (yelpArray, foursquareArray, callback) {
   var matchedRestaurants = [];
 
   function removeCommonWords (string) {
@@ -136,6 +150,10 @@ module.exports.matchRestaurants = function (yelpArray, foursquareArray) {
           foursquareArray[restaurantsq].venue.url,
           foursquareArray[restaurantsq].venue.location.lat,
           foursquareArray[restaurantsq].venue.location.lng,
+          
+          // yelpArray[restauranty].display_phone
+          yelpArray[restauranty].display_phone,
+          yelpArray[restauranty].image_url,
           {
             rating: yelpArray[restauranty].rating,
             ratingUrl: yelpArray[restauranty].rating_img_url,
@@ -147,17 +165,82 @@ module.exports.matchRestaurants = function (yelpArray, foursquareArray) {
             ratingColor: foursquareArray[restaurantsq].venue.ratingColor,
             url: createFoursquareURL(foursquareArray[restaurantsq].venue.id, foursquareArray[restaurantsq].venue.name),
             reviewCount: foursquareArray[restaurantsq].venue.ratingSignals
-          },
-          // yelpArray[restauranty].display_phone
-          yelpArray[restauranty].display_phone,
-          yelpArray[restauranty].image_url
+          }
           );
         matchedRestaurants.push(rest);
       }
     }
   }
-  return matchedRestaurants;
+
+  var allFetchesFinished = function () {
+    // console.log(matchedRestaurants);
+    for (var i = 0; i < matchedRestaurants.length; i++) {
+      if (!matchedRestaurants[i].googleFound) {
+        console.log('found false for ', matchedRestaurants[i].name);
+        return false;
+      }
+    }
+    return true;
+  };
+
+
+  for (var i = 0; i < matchedRestaurants.length; i++) {
+    var restaurant = matchedRestaurants[i];
+    var queryString = 
+      'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' +
+      'key=' + apiKeys.googleKeys().mapKey +
+      '&location=' + restaurant.location.latitute + ',' + restaurant.location.longitude +
+      '&name=' + restaurant.name +
+      '&radius=100';
+    // console.log(queryString);
+
+    function googleRequest (queryString, rest) {
+      request(queryString, function (error, response, body) {
+        
+        rest.googleFound = true;
+        var restaurantData = JSON.parse(body).results[0];
+        // console.log(JSON.parse(body));
+        if (JSON.parse(body).status !== 'ZERO_RESULTS') {
+          if (restaurantData.opening_hours) {
+            restaurant.openNow = restaurantData.opening_hours.open_now;
+          }
+          rest.priceLevel = restaurantData.price_level;
+          rest.googleData = {
+            rating: restaurantData.rating
+          }
+        }
+        // console.log('checking!');
+        if (allFetchesFinished()) {
+          // console.log('allfetches')
+          callback(matchedRestaurants);
+        }
+      })
+    }
+
+    googleRequest(queryString, restaurant);
+    
+
+  }
+
+
+  // var counter = 0;
+  // for (var restaurant = 0; restaurant < matchedRestaurants.length; restaurant++) {
+  //   for (var restaurantG = 0; restaurantG < googleArray.length; restaurantG++) {
+  //     if (matchedRestaurants[restaurant].name === removeCommonWords(googleArray[restaurantG].name) 
+  //       // && matchedRestaurants[restaurant].address === extractAddressNumber(googleArray[restaurantG].vicinity)
+  //       ) {
+  //       console.log('match found!');
+  //       counter++;
+  //       matchedRestaurants[restaurant].googleData = {rating: googleArray[restaurantG].rating};
+
+  //     }
+  //   }
+  // }
+  // console.log(counter, ' matches found');
+  // return matchedRestaurants;
 }
+
+
 
 var createFoursquareURL = function (venueID, venueName) {
   var url = 'https://foursquare.com/v/';
@@ -172,7 +255,7 @@ var createFoursquareURL = function (venueID, venueName) {
   return url;
 }
 
-var Restaurant = function (name, address, url, lat, long, yelpData, foursquareData, phoneNumber, imageUrl) {
+var Restaurant = function (name, address, url, lat, long, phoneNumber, imageUrl, yelpData, foursquareData, googleData) {
   this.name = name;
   this.address = address;
   this.url = url;
@@ -199,6 +282,11 @@ var Restaurant = function (name, address, url, lat, long, yelpData, foursquareDa
   //   reviewCount: 23
   // },
 
+  this.googleData = googleData;
+  // { rating: 4.2 }
+  
+  this.googleFound = false;
+
   this.totalReviews = this.yelpData.reviewCount + this.foursquareData.reviewCount;
 
   // this.compositeScore = (( this.yelpData.rating * 2 * this.yelpData.reviewCount +
@@ -211,4 +299,6 @@ var Restaurant = function (name, address, url, lat, long, yelpData, foursquareDa
 
   this.phoneNumber = phoneNumber;
   this.imageUrl = imageUrl;
+  this.priceLevel = undefined;
+  this.openNow = undefined;
 }
