@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top" ng-init="syncResults(); checkUserPage();">
+<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: black" ng-init="syncResults(); checkUserPage();">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -102,7 +102,7 @@
           <img  width="15px" height="15px" src="{{ i }}" alt="" >
         </div>
 
-        <span class="count"> ({{ restaurant.foursquareData.rating }} out of 5 based on {{ restaurant.foursquareData.reviewCount }} reviews)</span>
+        <span class="count"> ({{ restaurant.googleData.rating }} out of 5)</span>
       </div>
       
     <!-- USER ACTIONS -->

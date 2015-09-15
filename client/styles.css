@@ -8,6 +8,7 @@
 }
 
 #mainImage{
+  max-width: 100%;
   margin: auto;
   text-alin: center;
 }
