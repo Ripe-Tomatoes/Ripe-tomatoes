@@ -34,7 +34,8 @@ module.exports = function (app, express){
     //for that key becomes the results from the API call.
     var tor = {
       yelp: false,
-      foursquare: false
+      foursquare: false,
+      // google: false
     };
 
     //Checks if all API's have been loaded. Outputs "true" or "false"
@@ -79,6 +80,7 @@ module.exports = function (app, express){
         //Otherwise, if all API fetches are complete, run the utils.matchRestaurants function to match up all the results
         //across all of the API fetches. Any additional APIs would need to be added into the matchRestaurants function
         if (allFetchesFinished()) {
+
           //If there was an error in the request, send error message to client in the form of an object:
           // { error: 'errorMessage as a string',
           //   errorCode: integer}
@@ -89,16 +91,20 @@ module.exports = function (app, express){
               errorCode: errorCode
             });
           } else {
-            var results = utils.matchRestaurants(tor.yelp.businesses, tor.foursquare.items);
-            //If no matches between the arrays are found, or the arrays are empty, return errorCode 20: No restaurants found
-            if (results.length === 0) {
-              res.send({
-                error: 'No restaurants found',
-                errorCode: 20
-              });
-            } else {
-              res.send({results: results});
-            }
+            utils.matchRestaurants(tor.yelp.businesses, tor.foursquare.items, function(results){
+              //If no matches between the arrays are found, or the arrays are empty, return errorCode 20: No restaurants found
+              // console.log('hi');
+              if (results.length === 0) {
+                res.send({
+                  error: 'No restaurants found',
+                  errorCode: 20
+                });
+              } else {
+                console.log(results);
+                res.send({results: results});
+              }
+            });
+            
           }
           
         }
@@ -106,7 +112,7 @@ module.exports = function (app, express){
       //Errors reset is necessary to ensure that TODO FINISH THIS
       resetErrors();
     };
-    apiSearch('google');
+    // apiSearch('google');
     apiSearch('yelp');
 
     apiSearch('foursquare');
