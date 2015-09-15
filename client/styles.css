@@ -117,3 +117,7 @@ h3 {
 .controls {
   max-height: 100px;
 }
+
+#signin, #signup {
+  margin-top: 200px;
+}
