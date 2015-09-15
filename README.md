@@ -1,5 +1,5 @@
 # Ripe-tomatoes
-*Look in more than one basket*
+*Look in more than one basket!*
 
 #Why Ripe Tomatoes
   1. Create awesome shit
@@ -44,15 +44,15 @@ User login:
   4. Token-based session created for user--user automatically signed in
   
   Relevant backend files: 
-  - server/server.js (starts the server and database)
-  - server/config/requestHandlers.js (handles requests)
-  - server/users/userController.js (handles all the functions related to user actions like sign-in, addFavorites, etc)
-  - server/users/userModel.js (defines user schema and password functions)
+- server/server.js (starts the server and database)
+- server/config/requestHandlers.js (handles requests)
+- server/users/userController.js (handles all the functions related to user actions like sign-in, addFavorites, etc)
+- server/users/userModel.js (defines user schema and password functions)
   
   Relevant frontend files:
-  - client/app.js (main angular functions)
-  - client/signin.html
-  - client/signup.html
+- client/app.js (main angular functions)
+- client/signin.html
+- client/signup.html
 
 #First steps
 1. Get your own damn API keys:
