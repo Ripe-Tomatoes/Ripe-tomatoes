@@ -121,9 +121,11 @@ module.exports = function (app, express){
 
   // app.post('/signin', );
 
+  //Handles the signup and signin request
   app.post('/signup', userController.signup);
   app.post('/signin', userController.signin);
 
+  //Handles the post request
   app.post('/user/:name', function (req, res) {
     if (req.body.op === 'add') {
       userController.addFavorite(req, res);
