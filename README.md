@@ -78,3 +78,60 @@ User login:
 9. Improved restaurant matching algorithm
 10. Improved API call structure
 11. Improved UI
+
+#Data structures passed around
+- Client to server search request: 
+```
+{
+  restaurant: 'restaurant name',
+  location: 'location' //can be generic like "sf" or a specific address. 
+}
+```
+- Server to client search results:
+```
+{
+  results: arrayOfRestaurants
+}
+```
+  If there was an error, sends back this:
+```
+{
+  error: 'error message',
+  erroCode: integerCode //ie 50
+}
+```
+- Array of restaurants (called matchedRestaurants in server/config/utils.js):
+```
+[
+  {
+    name: 'restaurantname',
+    address: 'restaurantAddress',
+    url: 'restaurantURL',
+    location: {
+      latitute: number,
+      longitude: number
+    },
+    yelpData: {
+      rating: number,
+      ratingUrl: 'link to yelp rating img',
+      url: 'link to yelp restaurant page',
+      reviewCount: number
+    },
+    foursquareData: {
+      rating: number,
+      url: 'link to foursquare restaurant page',
+      reviewCount: number
+    }
+    googleData: {
+      rating: number
+    }
+    googleFound: boolean //this is just an internal marker to check if the Google API query finishes
+    totalReviews: sumOfReviewCounts
+    compositeScore: secret sauce number
+    phoneNumber: 'phone number',
+    imageUrl: 'image url from yelp',
+    priceLevel: intFrom1to4of$, //from Google data
+    openNow: boolean //from Google data
+  }
+]
+```
