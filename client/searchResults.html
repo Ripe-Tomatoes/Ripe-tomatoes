@@ -121,7 +121,7 @@
           <div ng-repeat="review in restaurant.reviews">
             <p> {{ review[0] }} </p><strong> {{ review[1] }} </strong>
           </div>
-          <div>
+          <div id="commentInput" ng-show="loggedIn">
             <span><input type="text" placeholder="add comment here" ng-model="restaurant.comment"></span>
             <span><button ng-click="addComment(restaurant.comment, restaurant.name, restaurant.address); restaurant.comment=''">publish comment</button></span>
           <div>
