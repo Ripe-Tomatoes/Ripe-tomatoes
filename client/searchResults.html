@@ -120,7 +120,7 @@
         </div> <!-- end add_to_favorites -->
         <div id="comments" ng-show="restaurant.comments">
           <div ng-repeat="review in restaurant.reviews">
-            <p> {{ review[0] }} </p><strong> {{ review[1] }} </strong>
+            <span><p><strong> {{ review[1] }} </strong> said "{{ review[0] }}" </p></span>
           </div>
           <div id="commentInput" ng-show="loggedIn">
             <span><input type="text" placeholder="add comment here" ng-model="restaurant.comment"></span>
