@@ -2,14 +2,14 @@
 Restaurant information agregator
 
 #Why Ripe Tomatoes
-  *1. Create awesome shit*
+  1. Create awesome shit
     - Work on an app that can be used by consumers on a daily basis
     - Easy to set layerable short-term and long-term goals--very little all/nothing milestones
-  *2. Create that shit quickly*
+  2. Create that shit quickly
     - Thorough documentation and comments
     - Modularized code
     - Zhao
-  *3. Get better at shit*
+  3. Get better at shit
     - Wide range of challenges, from MVC and Angular to databases and tokens. APIs, callbacks/async functions. Front-end and back-end.
 
 #Getting Started
@@ -27,6 +27,7 @@ Search query:
   5. Once the array is complete, server sends a Google API request for each restaurant in the array. These requests (1 per restaurant) are done async to minimize time. The restaurant array is then updated with the Google API information
   6. Server then sends the results of the search back to the client
   7. Client handles the data and renders it appropriately
+  
   Relevant backend files: 
 - server/server.js (starts the server and database)
 - server/config/requestHandlers.js (handles requests)
@@ -40,6 +41,7 @@ User login:
   2. Client sends information to server
   3. Server checks if username exists, adds user + encrypted/hashed pw to MongoDB. User's favorites can now be stored
   4. Token-based session created for user--user automatically signed in
+  
   Relevant backend files: 
   - server/server.js (starts the server and database)
   - server/config/requestHandlers.js (handles requests)
