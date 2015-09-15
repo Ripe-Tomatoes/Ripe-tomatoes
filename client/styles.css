@@ -7,8 +7,17 @@
  width: 50%;
 }
 
+#mainImage{
+  margin: auto;
+  text-alin: center;
+}
+
 #clearer {
   color: white;
+}
+
+#loginButton {
+  margin-top: 25px;
 }
 
 #logo {
