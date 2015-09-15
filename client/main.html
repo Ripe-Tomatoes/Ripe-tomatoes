@@ -2,15 +2,14 @@
   <a href="#/results">Back</a>
 </div>
 <div class="main" ng-init="checkUser()">
-  <img id="mainImage" src="tomato.png">
-  <h1>Ripe Tomatoes</h1>
+<img id="mainImage" src="rt-logo.png">
   <h2>Look in more than one basket.</h2>
   <form name="searchBar" ng-submit="loadResults()" >
       <input type="text" name="name" placeholder="Enter restaurant name" ng-model="name" autofocus>
       <input type="text" name="location" placeholder="Enter location" ng-model="location">
       <button type="submit" class="search" ng-click="saveLocation()">Submit</button>
   </form >
-  <button ng-hide="loggedIn" class="btn btn-primary btn-lg" href="#signup" data-toggle="modal" data-target=".bs-modal-sm">Sign In/Register</button>
+  <button id="loginButton" ng-hide="loggedIn" class="btn btn-primary btn-lg" href="#signup" data-toggle="modal" data-target=".bs-modal-sm">Sign In/Register</button>
 
 <!-- MODAL -->
 <div id="loginModal" class="modal fade bs-modal-sm" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" ng-controller="AuthController">
