@@ -1,5 +1,5 @@
 # Ripe-tomatoes
-Restaurant information agregator
+*Look in more than one basket*
 
 #Why Ripe Tomatoes
   1. Create awesome shit
@@ -10,7 +10,7 @@ Restaurant information agregator
     - Modularized code
     - Zhao
   3. Get better at shit
-    - Wide range of challenges, from MVC and Angular to databases and tokens. APIs, callbacks/async functions. Front-end and back-end.
+    - Wide range of challenges, from MVC and Angular to databases and tokens. APIs, callbacks/async functions. Front-end and back-end. ALGORITHMS TOO YAY
 
 #Getting Started
 We are excited that you have chosen to contribute to the Ripe Tomatoes project! Ripe Tomatoes was designed to be highly modular and easily expandable. Notable things include:
@@ -32,6 +32,7 @@ Search query:
 - server/server.js (starts the server and database)
 - server/config/requestHandlers.js (handles requests)
 - server/config/utils.js (all of the helper functions, API calls, and comparison functions)
+  
   Relevant frontend files:
 - client/app.js (main angular functions)
 - client/searchResults.html (handles the results after server responds)
@@ -47,6 +48,7 @@ User login:
   - server/config/requestHandlers.js (handles requests)
   - server/users/userController.js (handles all the functions related to user actions like sign-in, addFavorites, etc)
   - server/users/userModel.js (defines user schema and password functions)
+  
   Relevant frontend files:
   - client/app.js (main angular functions)
   - client/signin.html
@@ -63,3 +65,16 @@ User login:
 4. In browser, go to 127.0.0.1:3000
 5. Follow the data flows as outlined above to understand the current structure and functions
 6. Ask Zhao for any help
+
+#Possible ideas
+1. Additional APIs: OpenTable, TripAdvisor, CitySearch, Facebook places, and more!
+2. User OAUTH for all APIs: let/force users to sign into their their yelp/foursquare accounts for personalized results. This lets you make API requests and have it count towards the user's API limit, and not your own. This is absolutely critical for any realistic public-release, as there's no way your own API key can handle the mass influx of requests
+3. User submission of reviews on external page: Assuming user OAUTH (#2 in ideas), users can then POST reviews to 3rd party pages like Yelp/Foursquare
+4. User reservations via OpenTable: There's money to be made here...
+5. Preview of 3rd party reviews
+6. Database to store all the restaurants: this is another way around issue raised in idea #2. Cache all restaurants found in your own database. May or may not violate some API ToS's
+7. Social sharing features
+8. Better results handling--what if a restaurant appears in Yelp but not in Foursquare? Could add a "no data found for x"
+9. Improved restaurant matching algorithm
+10. Improved API call structure
+11. Improved UI
