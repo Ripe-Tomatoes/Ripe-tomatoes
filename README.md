@@ -9,28 +9,19 @@ We are excited that you have chosen to contribute to the Ripe Tomatoes project! 
 
 #Data flow 
 Search query:
-1. User makes an inquiry for a given keyword and location
-
-2. Clientside sends a post request from '/search' with keyword and location to server
-
-3. Server processes the request and asynchronously sends out API requests to foursquare and yelp
-
-4. After foursquare and yelp API fetches are complete, server compares the results of the API and combines the results into one array called matchedRestaurants.
-
-5. Once the array is complete, server sends a Google API request for each restaurant in the array. These requests (1 per restaurant) are done async to minimize time. The restaurant array is then updated with the Google API information
-
-6. Server then sends the results of the search back to the client
-
-7. Client handles the data and renders it appropriately
+  1. User makes an inquiry for a given keyword and location
+  2. Clientside sends a post request from '/search' with keyword and location to server
+  3. Server processes the request and asynchronously sends out API requests to foursquare and yelp
+  4. After foursquare and yelp API fetches are complete, server compares the results of the API and combines the results into one array called matchedRestaurants.
+  5. Once the array is complete, server sends a Google API request for each restaurant in the array. These requests (1 per restaurant) are done async to minimize time. The restaurant array is then updated with the Google API information
+  6. Server then sends the results of the search back to the client
+  7. Client handles the data and renders it appropriately
 
 User login:
-1. User creates a new username/password
-
-2. Client sends information to server
-
-3. Server checks if username exists, adds user + encrypted/hashed pw to MongoDB. User's favorites can now be stored
-
-4. Token-based session created for user--user automatically signed in 
+  1. User creates a new username/password
+  2. Client sends information to server
+  3. Server checks if username exists, adds user + encrypted/hashed pw to MongoDB. User's favorites can now be stored
+  4. Token-based session created for user--user automatically signed in 
 
 #First steps
 1. Get your own damn API keys:
