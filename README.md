@@ -132,6 +132,22 @@ User login:
     imageUrl: 'image url from yelp',
     priceLevel: intFrom1to4of$, //from Google data
     openNow: boolean //from Google data
-  }
+  },
+  {...},
+  {...}
 ]
+```
+- Server to client review retrieval for Ripe Tomatoes ONLY:
+```
+{
+  results: arrayOfReviews
+}
+```
+- User database structure:
+```
+{
+  username: 'username',
+  password: 'password',
+  favorites: arrayOfRestaurants
+}
 ```
