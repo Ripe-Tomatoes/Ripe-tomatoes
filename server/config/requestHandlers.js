@@ -109,7 +109,7 @@ module.exports = function (app, express){
           
         }
       });
-      //Errors reset is necessary to ensure that TODO FINISH THIS
+      //Errors reset is necessary to ensure that errors from one API search don't conflict. Might not be necessary anymore
       resetErrors();
     };
     // apiSearch('google');
