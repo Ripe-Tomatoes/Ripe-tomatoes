@@ -11,8 +11,8 @@ module.exports = {
       var name, address,
             newRestaurant;
       var runThrough = function () {
-        name = req.body.restaurants[count][0],
-        address = req.body.restaurants[count][1],
+        name = req.body.restaurants[count][0];
+        address = req.body.restaurants[count][1];
         findOne({ name: name, address: address })
           .then(function (restaurant) {
             if (!restaurant) {
