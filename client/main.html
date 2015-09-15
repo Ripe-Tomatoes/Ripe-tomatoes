@@ -18,8 +18,8 @@
         <br>
         <div class="bs-example bs-example-tabs">
             <ul id="myTab" class="nav nav-tabs">
-              <li class="active"><a href="#signin" data-toggle="tab">Sign In</a></li>
-              <li class=""><a href="#signup" data-toggle="tab">Register</a></li>
+              <li class="active"><a ng-click="user.username =''; user.password=''" href="#signin" data-toggle="tab">Sign In</a></li>
+              <li class=""><a ng-click="user.username =''; user.password=''" href="#signup" data-toggle="tab">Register</a></li>
             </ul>
         </div>
 
@@ -77,7 +77,7 @@
             <div class="control-group">
               <label class="control-label" for="reenterpassword">Re-Enter Password:</label>
               <div class="controls">
-                <input id="reenterpassword" class="form-control" name="reenterpassword" type="password" placeholder="********" class="input-large" required="" ng-model="user.password">
+                <input id="reenterpassword" class="form-control" name="reenterpassword" type="password" placeholder="********" class="input-large" required="" ng-model="user.passwordrepeat">
               </div>
             </div>
             
