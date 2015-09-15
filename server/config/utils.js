@@ -4,17 +4,19 @@ var apiKeys = require('../../apiKeys.js');
 var request = require("request");
 var yelp = require("yelp").createClient(apiKeys.yelpKeys());
 
+//Yelp search function. Done via a yelp JS wrapper function
 module.exports.yelpSearch = function (searchTerm, callback){
   var results = yelp.search(searchTerm, function(err, data){
-    if(err){
+    if (err){
       callback({error: 'no geography that matches user inquiry found',
                 error_code: 50});
-    }else{
+    } else {
       callback(data);
     }
   });
 };
 
+//Foursquare API search
 module.exports.foursquareSearch = function (searchTerm, callback) {
   //this is the query string to be passed into foursquare's server
   var queryString = 
@@ -30,23 +32,29 @@ module.exports.foursquareSearch = function (searchTerm, callback) {
     }
     var parsedBody = JSON.parse(body);
     // console.log(parsedBody);
+    
+    //If foursquare gives an error 400, and says "failed geocode", it basically means that it can't
+    //find the location that it was passed. If so, this function sends back an object with error
     if (parsedBody.meta.code === 400) {
       if (parsedBody.meta.errorType === 'failed_geocode') {
         console.log('no geography that matches user inquiry found');
+
+        //This is the object sent back if there is an error
         callback({error: 'no geography that matches user inquiry found',
                   error_code: 50})
       }
+
+    //the 500 code error from foursquare is rare and it was happening randomly one day. Rarely hits nowadays
     } else if (parsedBody.meta.code === 500) {
       console.log('foursquare server error');
     } else {
       bodyDir = parsedBody.response.groups[0]
       callback(bodyDir);
     }
-
-
   })
 }
 
+//This function finds the coordinates of a location via Google Map API. No longer used
 var findCoord = function (location, callback) {
   var queryString = 
     'https://maps.googleapis.com/maps/api/geocode/json?' + 
@@ -62,6 +70,8 @@ var findCoord = function (location, callback) {
   })
 }
 
+//This is old code--no longer used. 
+//This function does a googleLocation search, similar to the foursquare and yelp searches
 module.exports.googleSearch = function (searchTerm, callback) {
   findCoord(searchTerm.location, function(res) {
     if (res.status === 'ZERO_RESULTS') {
@@ -95,28 +105,20 @@ module.exports.googleSearch = function (searchTerm, callback) {
         } else {
           callback(results);
         }
-        // console.log(parsedBody.results);
       })
     }
-   
   })
-
-  // var queryString = '';
-  // request(queryString, function (error, response, body) {
-  //   if (error) {
-  //     throw error;
-  //   }
-  //   var parsedBody = JSON.parse(body);
-  //   console.log(parsedBody);
-  //   //insert forloop for each restaurant int he response.
-  //   //do second API query to get result details
-  // })
 }
 
+//This massive function takes the restaurants that have been found so far and then matches them, combining them into 
+//one array called matchedRestaurants that is an array of Restaurants objects 
 module.exports.matchRestaurants = function (yelpArray, foursquareArray, callback) {
   var matchedRestaurants = [];
 
+  //Helper function to help remove certain common words, as defined in the ignoreWords array.
   function removeCommonWords (string) {
+
+    //Feel free to add words onto here as you feel is needed
     var ignoreWords = ["restaurant", "cuisine"];
     var cleanedString = string;
     
@@ -130,6 +132,7 @@ module.exports.matchRestaurants = function (yelpArray, foursquareArray, callback
     return cleanedString.replace( /\s+/, " ").trim();
   };
 
+  //Helper function to help extract addressnumbers from addresses. Used to compare restaurants
   function extractAddressNumber (string) {
     return string !== undefined ? string.match(/\d*\b/)[0] : null;
   };
@@ -139,9 +142,12 @@ module.exports.matchRestaurants = function (yelpArray, foursquareArray, callback
       // if (extractAddressNumber(yelpArray[restauranty].location.address[0]) === extractAddressNumber(foursquareArray[restaurantsq].venue.location.address)) {
       //   console.log(removeCommonWords(foursquareArray[restaurantsq].venue.name).length, removeCommonWords(yelpArray[restauranty].name).length);
       // };
+      
+      //This next line checks if the venues have the similar names, and if they have the same street number
       if (removeCommonWords(foursquareArray[restaurantsq].venue.name) === removeCommonWords(yelpArray[restauranty].name) &&
           extractAddressNumber(foursquareArray[restaurantsq].venue.location.address) === extractAddressNumber(yelpArray[restauranty].location.address[0])) {
   
+        //if they are the same, create a new restaurant and add it into the matchedRestaurants array
         var rest = new Restaurant(
           foursquareArray[restaurantsq].venue.name,
           // changed below to pull from yelp's location.display_address property instead of the location.address[0]
@@ -172,18 +178,19 @@ module.exports.matchRestaurants = function (yelpArray, foursquareArray, callback
     }
   }
 
+  //helper function to ensure that all the GoogleAPI searches are done.
   var allFetchesFinished = function () {
     // console.log(matchedRestaurants);
     for (var i = 0; i < matchedRestaurants.length; i++) {
       if (!matchedRestaurants[i].googleFound) {
-        console.log('found false for ', matchedRestaurants[i].name);
         return false;
       }
     }
     return true;
   };
 
-
+  //This for loop goes through each of the restaurants and searches the Google API for each particular restaurant. 
+  //This does a API call for EVERY restaurant in your array. Call is done async to save time. 
   for (var i = 0; i < matchedRestaurants.length; i++) {
     var restaurant = matchedRestaurants[i];
     var queryString = 
@@ -194,54 +201,45 @@ module.exports.matchRestaurants = function (yelpArray, foursquareArray, callback
       '&radius=100';
     // console.log(queryString);
 
-    function googleRequest (queryString, rest) {
+    //Helper function to help me pass in data async
+    (function googleRequest (queryString, rest) {
       request(queryString, function (error, response, body) {
         
         rest.googleFound = true;
         var restaurantData = JSON.parse(body).results[0];
         // console.log(JSON.parse(body));
+
+        //If the Google API search doesn't yield "zero results"...
         if (JSON.parse(body).status !== 'ZERO_RESULTS') {
+          
+          //add a boolean if the restaurant is open now
           if (restaurantData.opening_hours) {
             restaurant.openNow = restaurantData.opening_hours.open_now;
           }
+
+          //add the priceLevel as an integer, as number of $$$
           rest.priceLevel = restaurantData.price_level;
+
+          //add the Google reviews rating
           rest.googleData = {
             rating: restaurantData.rating
           }
         }
         // console.log('checking!');
+
+        //if all fetches finished, return the data
         if (allFetchesFinished()) {
           // console.log('allfetches')
           callback(matchedRestaurants);
         }
       })
-    }
-
-    googleRequest(queryString, restaurant);
-    
-
+    })(queryString, restaurant);
   }
-
-
-  // var counter = 0;
-  // for (var restaurant = 0; restaurant < matchedRestaurants.length; restaurant++) {
-  //   for (var restaurantG = 0; restaurantG < googleArray.length; restaurantG++) {
-  //     if (matchedRestaurants[restaurant].name === removeCommonWords(googleArray[restaurantG].name) 
-  //       // && matchedRestaurants[restaurant].address === extractAddressNumber(googleArray[restaurantG].vicinity)
-  //       ) {
-  //       console.log('match found!');
-  //       counter++;
-  //       matchedRestaurants[restaurant].googleData = {rating: googleArray[restaurantG].rating};
-
-  //     }
-  //   }
-  // }
-  // console.log(counter, ' matches found');
-  // return matchedRestaurants;
 }
 
 
-
+//Because foursquare API does not give you a link to its own foursquare page (which is really dumb...
+//this function automatically builds the URL)
 var createFoursquareURL = function (venueID, venueName) {
   var url = 'https://foursquare.com/v/';
   for (var index = 0; index < venueName.length; index++) {
@@ -255,6 +253,7 @@ var createFoursquareURL = function (venueID, venueName) {
   return url;
 }
 
+//This is the Restaurant class. Each restaurant found in Yelp && Foursquare is added as a Restaurant
 var Restaurant = function (name, address, url, lat, long, phoneNumber, imageUrl, yelpData, foursquareData, googleData) {
   this.name = name;
   this.address = address;
@@ -266,6 +265,8 @@ var Restaurant = function (name, address, url, lat, long, phoneNumber, imageUrl,
   this.yelpData = yelpData;
   this.yelpData.rating = this.yelpData.rating || 0;
   this.yelpData.reviewCount = this.yelpData.reviewCount || 0;
+
+  //This is what the yelpData would look like:
   // {
   //   rating: 4,
   //   ratingUrl: 'https://www.yelp.com/image',
@@ -276,6 +277,8 @@ var Restaurant = function (name, address, url, lat, long, phoneNumber, imageUrl,
   this.foursquareData = foursquareData;
   this.foursquareData.rating = (this.foursquareData.rating / 2) || 0;
   this.foursquareData.reviewCount = this.foursquareData.reviewCount || 0;
+  
+  //This is what the foursquareData would look like:
   // {
   //   rating: 9.8,
   //   url: 'https://www.foursquare.com',
@@ -283,6 +286,8 @@ var Restaurant = function (name, address, url, lat, long, phoneNumber, imageUrl,
   // },
 
   this.googleData = googleData;
+
+  //This is what the googleData would look like:
   // { rating: 4.2 }
   
   this.googleFound = false;
@@ -297,8 +302,11 @@ var Restaurant = function (name, address, url, lat, long, phoneNumber, imageUrl,
                     ((this.foursquareData.rating) * this.foursquareData.reviewCount )) / 
                     ( this.totalReviews )).toFixed(1);
 
+  //This data is from Yelp
   this.phoneNumber = phoneNumber;
   this.imageUrl = imageUrl;
+
+  //This data is from Google
   this.priceLevel = undefined;
   this.openNow = undefined;
 }
