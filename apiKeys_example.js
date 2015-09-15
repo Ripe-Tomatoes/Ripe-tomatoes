@@ -18,3 +18,10 @@ module.exports.foursquareKeys = function() {
     client_secret: '4SQSECRET'
   };
 };
+
+module.exports.googleKeys = function () {
+  return {
+    mapKey: 'mapKey',
+    searchKey: 'searchKey'
+  }
+}
