@@ -2,15 +2,15 @@
 Restaurant information agregator
 
 #Why Ripe Tomatoes
-  1. Create awesome shit
-  - Work on an app that can be used by consumers on a daily basis
-  - Easy to set layerable short-term and long-term goals--very little all/nothing milestones
-  2. Create that shit quickly
-  - Thorough documentation and comments
-  - Modularized code
-  - Zhao
-  3. Get better at shit
-  - Wide range of challenges, from MVC and Angular to databases and tokens. APIs, callbacks/async functions. Front-end and back-end.
+  *1. Create awesome shit*
+    - Work on an app that can be used by consumers on a daily basis
+    - Easy to set layerable short-term and long-term goals--very little all/nothing milestones
+  *2. Create that shit quickly*
+    - Thorough documentation and comments
+    - Modularized code
+    - Zhao
+  *3. Get better at shit*
+    - Wide range of challenges, from MVC and Angular to databases and tokens. APIs, callbacks/async functions. Front-end and back-end.
 
 #Getting Started
 We are excited that you have chosen to contribute to the Ripe Tomatoes project! Ripe Tomatoes was designed to be highly modular and easily expandable. Notable things include:
@@ -27,11 +27,11 @@ Search query:
   5. Once the array is complete, server sends a Google API request for each restaurant in the array. These requests (1 per restaurant) are done async to minimize time. The restaurant array is then updated with the Google API information
   6. Server then sends the results of the search back to the client
   7. Client handles the data and renders it appropriately
-Relevant backend files: 
+  Relevant backend files: 
 - server/server.js (starts the server and database)
 - server/config/requestHandlers.js (handles requests)
 - server/config/utils.js (all of the helper functions, API calls, and comparison functions)
-Relevant frontend files:
+  Relevant frontend files:
 - client/app.js (main angular functions)
 - client/searchResults.html (handles the results after server responds)
 
@@ -40,12 +40,12 @@ User login:
   2. Client sends information to server
   3. Server checks if username exists, adds user + encrypted/hashed pw to MongoDB. User's favorites can now be stored
   4. Token-based session created for user--user automatically signed in
-Relevant backend files: 
+  Relevant backend files: 
   - server/server.js (starts the server and database)
   - server/config/requestHandlers.js (handles requests)
   - server/users/userController.js (handles all the functions related to user actions like sign-in, addFavorites, etc)
   - server/users/userModel.js (defines user schema and password functions)
-Relevant frontend files:
+  Relevant frontend files:
   - client/app.js (main angular functions)
   - client/signin.html
   - client/signup.html
