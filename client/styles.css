@@ -8,6 +8,7 @@
 }
 
 #mainImage{
+  max-width: 100%;
   margin: auto;
   text-alin: center;
 }
@@ -118,6 +119,6 @@ h3 {
   max-height: 100px;
 }
 
-#signin, #signup {
+#signin-page, #signup-page {
   margin-top: 200px;
 }

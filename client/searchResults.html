@@ -75,13 +75,13 @@
       </div>
 
     <!-- Yelp meter -->
-      <div class="yelp data">
+      <div class="yelp data" ng-show="restaurant.yelpData.reviewCount">
         <a href="{{restaurant.yelpData.url}}" class="link" target='_blank'>Yelp: </a>
         <span class="rating"><img src="{{ restaurant.yelpData.ratingUrl }}" alt=""> ({{restaurant.yelpData.rating }} out of 5 based on {{restaurant.yelpData.reviewCount}} reviews)</span>
       </div>
 
     <!-- FourSquare Meter -->
-      <div class="fourQ data">
+      <div ng-show="restaurant.foursquareData.reviewCount" class="fourQ data">
         <a href="{{restaurant.foursquareData.url}}" class="link" target='_blank'>FourSquare: </a>
         <div id="fs-logo" class="fs_rating" ng-repeat="i in getNumber(restaurant.foursquareData.rating, 'foursquare')">
           <img  width="15px" height="15px" src="{{ i }}" alt="" >
@@ -91,14 +91,14 @@
       </div>
 
     <!-- Google Meter -->
-      <div class="google data">
+      <div class="google data" ng-show="restaurant.googleData.rating">
       <!-- TODO: need to add working link to google review page -->
         <a href="#" class="link" target='_blank'>Google: </a>
         <div id="fs-logo" class="fs_rating" ng-repeat="i in getNumber(restaurant.googleData.rating, 'google')">
           <img  width="15px" height="15px" src="{{ i }}" alt="" >
         </div>
 
-        <span class="count"> ({{ restaurant.foursquareData.rating }} out of 5 based on {{ restaurant.foursquareData.reviewCount }} reviews)</span>
+        <span class="count"> ({{ restaurant.googleData.rating }} out of 5)</span>
       </div>
     </div> <!-- end rating meters -->
 
