@@ -29,18 +29,7 @@
         <li ng-hide="loggedIn"><a href="#/signup">Sign Up</a></li>
         <li ng-show="loggedIn"><span class="navbar-text">Welcome, <a href="#/user/{{username}}">{{ username }}</a>!</span></li>
         <!-- TODO: get bage to display current number of user favorites -->
-        <li ng-show="loggedIn"><a href="#/user/{{username}}" >Favorites</a></li>
         <li ng-show="loggedIn"><a ng-click="signout()">Sign Out</a></li>
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-          </ul>
-        </li>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
@@ -93,8 +82,20 @@
 
     <!-- FourSquare Meter -->
       <div class="fourQ data">
-        <a href="{{restaurant.foursquareData.url}}" class="link" target='_blank'>FourSquare</a>
+        <a href="{{restaurant.foursquareData.url}}" class="link" target='_blank'>FourSquare: </a>
         <div id="fs-logo" class="fs_rating" ng-repeat="i in getNumber(restaurant.foursquareData.rating, 'foursquare')">
+          <img  width="15px" height="15px" src="{{ i }}" alt="" >
+        </div>
+
+        <span class="count"> ({{ restaurant.foursquareData.rating }} out of 5 based on {{ restaurant.foursquareData.reviewCount }} reviews)</span>
+      </div>
+    </div> <!-- end rating meters -->
+
+    <!-- Google Meter -->
+      <div class="google data">
+      <!-- TODO: need to add working link to google review page -->
+        <a href="#" class="link" target='_blank'>Google: </a>
+        <div id="fs-logo" class="fs_rating" ng-repeat="i in getNumber(restaurant.googleData.rating, 'google')">
           <img  width="15px" height="15px" src="{{ i }}" alt="" >
         </div>
 

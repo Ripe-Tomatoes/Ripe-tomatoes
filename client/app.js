@@ -148,6 +148,11 @@ angular.module('ripeT', ['ngMap'])
         whole: 'tomato_map.png',
         half: 'tomato_half.png',
         whole_gray: 'tomato_grey.png'
+      },
+      google: {
+        whole: 'google_full.png',
+        half: 'google_half.png',
+        whole_gray: 'google_grey.png'
       }
     };
 

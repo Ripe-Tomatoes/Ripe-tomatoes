@@ -9,7 +9,7 @@
         <span class="icon-bar"></span>
       </button>
       <div>
-        <a class="navbar-brand" href="#"><img style="width: 25 px; height:25px" src="tomato_map.png"></a>
+        <a class="navbar-brand" href="#"><img style="width: 25 px; height:25px" src="rt-logo-white.png"></a>
       </div>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
@@ -28,7 +28,7 @@
         <li ng-hide="loggedIn"><a href="#/signin">Sign In</a></li>
         <li ng-hide="loggedIn"><a href="#/signup">Sign Up</a></li>
         <li ng-show="loggedIn"><span class="navbar-text">Welcome, <a href="#/user/{{username}}">{{ username }}</a>!</span></li>
-        <li ng-show="loggedIn"><a href="#/user/{{username}}" >Favorites <span class="badge">{{ favorites.length }}</span></a></li>
+        <!-- <li ng-show="loggedIn"><a href="#/user/{{username}}" >Favorites <span class="badge">{{ favorites.length }}</span></a></li> -->
         <li ng-show="loggedIn"><a ng-click="signout()">Sign Out</a></li>
 
         <li class="dropdown">
@@ -104,6 +104,17 @@
       </div>
     </div> <!-- end rating meters -->
 
+    <!-- Google Meter -->
+      <div class="google data">
+      <!-- TODO: need to add working link to google review page -->
+        <a href="#" class="link" target='_blank'>Google: </a>
+        <div id="fs-logo" class="fs_rating" ng-repeat="i in getNumber(restaurant.googleData.rating, 'google')">
+          <img  width="15px" height="15px" src="{{ i }}" alt="" >
+        </div>
+
+        <span class="count"> ({{ restaurant.foursquareData.rating }} out of 5 based on {{ restaurant.foursquareData.reviewCount }} reviews)</span>
+      </div>
+      
     <!-- USER ACTIONS -->
         <div id="add_to_favorites" class="user-action" ng-init="isVisitor()" ng-hide="isVisitor()" >
           <!-- Empty star glyohicon for results not yet in favorites-->
