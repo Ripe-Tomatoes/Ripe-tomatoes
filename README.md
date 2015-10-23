@@ -2,14 +2,13 @@
 *Look in more than one basket!*
 
 #Why Ripe Tomatoes
-  1. Create awesome shit
+  1. Create an awesome app
     - Work on an app that can be used by consumers on a daily basis
     - Easy to set layerable short-term and long-term goals--very little all/nothing milestones
-  2. Create that shit quickly
+  2. Create new features quickly
     - Thorough documentation and comments
     - Modularized code
-    - Zhao
-  3. Get better at shit
+  3. Get better at building applications
     - Wide range of challenges, from MVC and Angular to databases and tokens. APIs, callbacks/async functions. Front-end and back-end. ALGORITHMS TOO YAY
 
 #Getting Started
